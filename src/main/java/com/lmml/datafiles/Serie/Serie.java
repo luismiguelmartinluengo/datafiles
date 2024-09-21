@@ -1,25 +1,19 @@
 package com.lmml.datafiles.Serie;
 
-import java.util.Arrays;
-import java.util.ArrayList;
+abstract class Serie {
 
-public class Serie {
-
-    private String[] data = new String[0];
+    private String name = "";
     
-    void add(String _value){
-        int newIndex = data.length;
-        data = Arrays.copyOf(data, newIndex+1);
-        data[newIndex] = _value;
-    }//End add
+    String getName(){
+        return name;
+    }//End getName
 
-    void add(String[] _values){
-        int newIndex = data.length;
-        data = Arrays.copyOf(data, newIndex + _values.length);
-        for (String value : _values) {
-            data[newIndex] = value;
-            newIndex++;
-        }//End for
-    }//End add
+    abstract void add(String _value);
+    abstract void addAll(String[] _values);
+    abstract String getString(int _index);
+
+    Serie(String _name){
+        name = _name;
+    }//End Constructor
 
 }//End Serie
