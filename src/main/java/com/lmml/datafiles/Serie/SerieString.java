@@ -26,4 +26,20 @@ public class SerieString extends Serie {
         return (_index < data.size() && _index >-1)?data.get(_index):null;    
     }//End getString
 
+    @Override
+    void add(Integer _value) {
+        this.add(_value.toString());
+    }//End add
+
+    @Override
+    void addAll(Integer[] _values) {
+        Arrays.
+    }//End addAll
+
+    @Override
+    Integer getInteger(int _index) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getInteger'");
+    }
+
 }
