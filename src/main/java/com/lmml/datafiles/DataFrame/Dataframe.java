@@ -14,9 +14,9 @@ public class Dataframe {
         }//End if
     }//End getRecordCount
     
-    void addRecord(Object[] _values){
+    void addRecord(String[] _values){
         /*Aáde un elemento del registro pasado por parámetro a cada una de las series del Dataframe
-         * Si se pasan más valores en el registro que seires existentes, se descartan los datos que sobren por la derecha
+         * Si se pasan más valores en el registro que series existentes, se descartan los datos que sobren por la derecha
          * Si no se pasan valores para todas las series, se rellenan las últims con valor nulo
          */
         int numSeriesWithValue = Math.min(_values.length, series.size());
@@ -28,15 +28,15 @@ public class Dataframe {
         }//End for
     }//End addRecord
 
-    void writeConsole(){
+    public void writeConsole(){
         StringBuffer output = new StringBuffer();
         for(Serie s: series){
-            output.append(s.getConsoleName());
+            output.append(s.getConsoleName()).append("\t");
         }//End for
         for(int index = 0; index < this.getRecordCount(); index++){
             output.append("\n");
             for(Serie s: series){
-                output.append(s.getConsoleOutput(index));
+                output.append(s.getConsoleOutput(index)).append("\t");
             }//End for
         }//End for
         System.out.println(output.toString());
@@ -52,7 +52,7 @@ public class Dataframe {
         }//End for
     }//End adjustSeries
 
-    Dataframe(String[] _names, String[][] _values){
+    public Dataframe(String[] _names, String[][] _values){
         int maxLength = Math.min(_names.length, _values.length);
         for (int index = 0; index < maxLength; index++ ){
             series.add(new Serie(_names[index], _values[index]));

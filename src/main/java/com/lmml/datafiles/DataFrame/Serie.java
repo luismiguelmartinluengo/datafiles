@@ -8,9 +8,9 @@ public class Serie {
     public String name = "";
     private int consoleWidth = -1; //todos los métodos que alteren el contenido de data tienen que poner este valor a -1
     
-    private ArrayList<Object> data = new ArrayList<Object>();
+    private ArrayList<String> data = new ArrayList<String>();
 
-    public void add(Object _value){
+    public void add(String _value){
         data.add(_value);
         consoleWidth = -1;
     }//End add
@@ -38,8 +38,8 @@ public class Serie {
 
     private void calculateWidthConsoleOutput(){
         int width = name.length();
-            for (Object d: data){
-                width = Math.max(width, d.toString().length());
+            for (String d: data){
+                width = Math.max(width, d.length());
             }//End for
             consoleWidth = width;
     }//End calculateWidthConsoleOutput
