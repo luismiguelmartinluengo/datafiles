@@ -1,6 +1,7 @@
 package com.lmml.datafiles;
 
 import com.lmml.datafiles.DataFrame.*;
+import com.lmml.datafiles.Explorer.*;
 
 public class App 
 {
@@ -9,5 +10,12 @@ public class App
         String[] nombres = {"ColA","ColB"};
         Dataframe df = new Dataframe(nombres, datosPrueba);
         df.writeConsole();
+
+        String linea = "'Hola,que','tal,estas'";
+        FieldsExtractor fe = new FieldsExtractor(",","'");
+        for (String palabra : fe.get(linea)) {
+            System.out.println(palabra);
+        }//End for
+
     }//End main
 }//End App

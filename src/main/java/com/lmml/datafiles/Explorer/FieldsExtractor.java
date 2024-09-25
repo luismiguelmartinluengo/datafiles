@@ -3,7 +3,7 @@ package com.lmml.datafiles.Explorer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class FileExtractor {
+public class FieldsExtractor {
 
     private String separator;
 	private String delimiter;
@@ -35,37 +35,35 @@ public class FileExtractor {
 		return listafinal.toArray(new String[listafinal.size()]);
 	}//End getWithDelimiter
 
-    String[] get(String _cadena){
+    public String[] get(String _cadena){
 		if (!withDelimiter) {
 			return getWithoutDelimiter(_cadena);
 		}else {
 			return getWithDelimiter(_cadena);
 		}//End if
-	}//get
+	}//End get
 
-    /*
-    private String sep_del_adaptado(String _sd) {
-		ArrayList<String> especiales = new ArrayList<String>(Arrays.asList(specialsStrings));;
-		if (especiales.contains(_sd)) {
+    private String sep_del_adapter(String _sd) {
+		ArrayList<String> specials = new ArrayList<String>(Arrays.asList(specialsStrings));;
+		if (specials.contains(_sd)) {
 			return "\\" + _sd;
 		}else {
 			return _sd;
 		}//End if
-	}//End sep_del_adaptado
-    */
-
-    FileExtractor(String _separator, String _delimitador){
-		separator = sep_del_adaptado(_separator);
+	}//End sep_del_adapter
+    
+    public FieldsExtractor(String _separator, String _delimitador){
+		separator = sep_del_adapter(_separator);
 		if (_delimitador.length()>0) {
-			delimiter = sep_del_adaptado(_delimitador);
+			delimiter = sep_del_adapter(_delimitador);
 			withDelimiter = true;
 		}else {
 			withDelimiter = false;
 		}//End if
 	}//End Constructor
 	
-	FileExtractor(String _separator){
-		separator = sep_del_adaptado(_separator);
+	public FieldsExtractor(String _separator){
+		separator = sep_del_adapter(_separator);
 		withDelimiter = false;
 	}//End Constructor
 
