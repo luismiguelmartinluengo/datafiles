@@ -10,10 +10,10 @@ import java.time.format.DateTimeFormatter;
 
 public class Logs implements AutoCloseable{
 
-	private final static int NO_LOGS_LEVEL = 0;
-    private final static int INFO_LEVEL = 1;
-    private final static int WARNING_LEVEL = 2;
-    private final static int CRITICAL_LEVEL = 3;
+	public final static int NO_LOGS_LEVEL = 0;
+    public final static int INFO_LEVEL = 1;
+    public final static int WARNING_LEVEL = 2;
+    public final static int CRITICAL_LEVEL = 3;
     private static PrintWriter pw;
 	private static int nivel_log = 3;
 	private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMddHHmmss_SSS");
@@ -31,41 +31,41 @@ public class Logs implements AutoCloseable{
         }//End if
 	}//End start
 
-	hay que sacar por consola los menajes de activacion y desativacion de logs
-    
 	public static void changeLevel(int _newLevel){
 		String changeMessage;
         if (nivel_log != _newLevel){
             if (_newLevel == NO_LOGS_LEVEL){
-                pw.println(String.format("{0} LOGS DESACTIVADOS {0}", "-".repeat(10)));
+				changeMessage = String.format("{0} LOGS DESACTIVADOS {0}", "-".repeat(10));
                 nivel_log = NO_LOGS_LEVEL;
             }else{
                 if (!started){
 					try{
 						start(_newLevel);
 					}catch(IOException e){
-						System.w
+						System.out.println("Error en el inicio de escritura de logs");
+						System.out.println(e.getMessage());
 					}//End try
-                    
                 }else{
                     nivel_log = _newLevel;
                 }//End if
-                pw.println(String.format("{0} ESTABLECIDO NIVEL DE LOGS: {1} {0}", "-".repeat(10),(nivel_log>2)?"CRITICAL":(nivel_log>1)?"WARNING":"INFO"));
+				changeMessage = String.format("{0} ESTABLECIDO NIVEL DE LOGS: {1} {0}", "-".repeat(10),(nivel_log>2)?"CRITICAL":(nivel_log>1)?"WARNING":"INFO");
             }//End if
-
+			pw.println(changeMessage);
+			pw.flush();
+			System.out.println(changeMessage);
         }//End if
     }//End changeLevel
 
 	public static boolean asInfo() {
-		return nivel_log>0; 
+		return nivel_log > NO_LOGS_LEVEL; 
 	}//End asInfo
 	
 	public static boolean asWarning() {
-		return nivel_log>1;
+		return nivel_log > INFO_LEVEL;
 	}//End asWarning
 
     public static boolean asCritical() {
-        return nivel_log>2;
+        return nivel_log > WARNING_LEVEL;
     }//End as Critical
 	
 	private static void escritura(StackTraceElement[] _array_stack_trace, String _nivel, int _id_mensaje, String _mensaje) {
@@ -76,6 +76,7 @@ public class Logs implements AutoCloseable{
 		String cadena = String.format("%s;%s;%d;%s;%s;%d;%d;%s", hora, nombre_clase, hash_clase, nombre_metodo, _nivel, id_log, _id_mensaje,_mensaje);
 		pw.println(cadena);
 		pw.flush();
+		System.out.println(cadena);
 	}//End if
 	
 	public static void info(StackTraceElement[] _array_stack_trace, String _mensaje) {
