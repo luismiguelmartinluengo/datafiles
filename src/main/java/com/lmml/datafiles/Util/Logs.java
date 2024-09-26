@@ -15,16 +15,16 @@ public class Logs implements AutoCloseable{
     public final static int WARNING_LEVEL = 2;
     public final static int CRITICAL_LEVEL = 3;
     private static PrintWriter pw;
-	private static int nivel_log = 3;
+	private static int nivel_log = 0;
 	private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMddHHmmss_SSS");
 	private static int id_log = -1;
     private static boolean started = false;
 	
-	public static void start(Integer _nivel_log) throws IOException {
+	private static void start(Integer _nivel_log) throws IOException {
         if (!started && _nivel_log> NO_LOGS_LEVEL){
             File archivo = new File("Logs");
             if (!archivo.isDirectory()) {archivo.mkdir();}//End if
-            archivo = new File(String.format("./Logs/log_%s.csv",LocalDateTime.now().format(dtf)));
+            archivo = new File(String.format("./Logs/log_%s.log",LocalDateTime.now().format(dtf)));
             pw = new PrintWriter(new BufferedWriter(new FileWriter(archivo)));
             nivel_log = _nivel_log;
             started = true;
@@ -32,10 +32,12 @@ public class Logs implements AutoCloseable{
 	}//End start
 
 	public static void changeLevel(int _newLevel){
-		String changeMessage;
+		
         if (nivel_log != _newLevel){
+			String changeMessage;
+			String bounded = "-".repeat(10);
             if (_newLevel == NO_LOGS_LEVEL){
-				changeMessage = String.format("{0} LOGS DESACTIVADOS {0}", "-".repeat(10));
+				changeMessage = String.format("%s LOGS DESACTIVADOS %s", bounded, bounded);
                 nivel_log = NO_LOGS_LEVEL;
             }else{
                 if (!started){
@@ -48,7 +50,7 @@ public class Logs implements AutoCloseable{
                 }else{
                     nivel_log = _newLevel;
                 }//End if
-				changeMessage = String.format("{0} ESTABLECIDO NIVEL DE LOGS: {1} {0}", "-".repeat(10),(nivel_log>2)?"CRITICAL":(nivel_log>1)?"WARNING":"INFO");
+				changeMessage = String.format("%s ESTABLECIDO NIVEL DE LOGS: %s %s", bounded,((nivel_log>2)?"CRITICAL":(nivel_log>1)?"WARNING":"INFO"), bounded);
             }//End if
 			pw.println(changeMessage);
 			pw.flush();
