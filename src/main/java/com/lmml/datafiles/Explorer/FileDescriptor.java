@@ -14,50 +14,49 @@ import com.lmml.datafiles.Util.Logs;
 
 public class FileDescriptor {
 
-    private String nombre = "Sin nombre";
-	private String ruta;
-	private String separador_campos;
-	private String delimitador_campos;
-	private ArrayList<String> encabezados;
-	private Integer saltar_lineas = 0;
-	private Integer num_lineas;
-	private LinkedHashSet<AutoEditableListener> auto_editable_listeners = new LinkedHashSet<AutoEditableListener>();
+    private String name = "Sin nombre";
+	private String path;
+	private String fieldsSeparator;
+	private String fieldsDelimiter;
+	private String[] heads;
+	private Integer skipLines = 0;
+	private Integer numLines;
 	
-	void setNombre(String _nombre) {nombre = _nombre;}//End setNombre
+	void setname(String _name) {name = _name;}//End setname
 	
-	public String getNombre() {return nombre;}//End getNombre
+	public String getname() {return name;}//End getname
 	
-	static String getNombreRepositorio(String _nombre) {
-		return _nombre.trim().replaceAll(" ","_").replaceAll("[^a-zA-Z0-9_]", "").toLowerCase();
-	}//End static getNombreRepositorio
+	static String getRepositoryName(String _name) {
+		return _name.trim().replaceAll(" ","_").replaceAll("[^a-zA-Z0-9_]", "").toLowerCase();
+	}//End static getRepositoryName
 	
-	public String getNombreRepositorio() {
-		return getNombreRepositorio(nombre);
-	}//End getNombreRepositorio
+	public String getRepositoryName() {
+		return getRepositoryName(name);
+	}//End getRepositoryName
 	
-	void setRuta(String _ruta) {ruta = _ruta;}//End setRuta
+	void setpath(String _path) {path = _path;}//End setpath
 	
-	String getRuta() {return ruta;}//End getRuta
+	String getpath() {return path;}//End getpath
 	
-	void setSeparadorCampos(String _separador_campos) {separador_campos = _separador_campos;}//End setSeparadorCampos
+	void setFieldsSeparator(String _fieldsSeparator) {fieldsSeparator = _fieldsSeparator;}//End setFieldsSeparator
 	
-	String getSeparadorCampos() {return separador_campos;}//End getSeparadorCampos
+	String getFieldsSeparator() {return fieldsSeparator;}//End getFieldsSeparator
 	
-	void setDelimitadorCampos(String _delimitador_campos) {delimitador_campos = _delimitador_campos;}//End setDelimitadorCampos
+	void setFieldsDelimiter(String _fieldsDelimiter) {fieldsDelimiter = _fieldsDelimiter;}//End setFieldsDelimiter
 	
-	String getDelimitadorCampos() {return delimitador_campos;}//End getDelimitadorCampos
+	String getFieldsDelimiter() {return fieldsDelimiter;}//End getFieldsDelimiter
 	
-	void setEncabezados(ArrayList <String> _encabezados) {encabezados = _encabezados;}//End setEncabezados
+	void setheads(String[] _heads) {heads = _heads;}//End setheads
 	
-	ArrayList<String> getEncabezados(){return encabezados;}//End getEncabezados
+	String[] getheads(){return heads;}//End getheads
 	
-	void setSaltarLineas(Integer _saltar_lineas) {saltar_lineas = _saltar_lineas;}//End setSaltarLineas
+	void setSkipLines(Integer _skipLines) {skipLines = _skipLines;}//End setSkipLines
 	
-	Integer getSaltarLineas() {return saltar_lineas;}//End Integer
+	Integer getSkipLines() {return skipLines;}//End Integer
 	
-	void setNumLineas(Integer _num_lineas) {num_lineas = _num_lineas;}//End setNumLineas
+	void setNumLines(Integer _numLines) {numLines = _numLines;}//End setNumLines
 	
-	Integer getNumLineas() {return num_lineas;}//End getNumLineas
+	Integer getNumLines() {return numLines;}//End getNumLines
 	
 	String asJson() {
 		Gson gson = new Gson();
@@ -71,79 +70,78 @@ public class FileDescriptor {
 	
 	FieldsExtractor getFieldsExtractor() {
 		try {
-			FieldsExtractor vreturn;
-			if (delimitador_campos != null) {
-				vreturn = new FieldsExtractor(separador_campos, delimitador_campos);
+			FieldsExtractor returnValue;
+			if (fieldsDelimiter != null) {
+				returnValue = new FieldsExtractor(fieldsSeparator, fieldsDelimiter);
 			}else {
-				vreturn = new FieldsExtractor(separador_campos);
+				returnValue = new FieldsExtractor(fieldsSeparator);
 			}//End if
-			return vreturn;
+			return returnValue;
 		}catch (Error e) {
-			Logs.warning(Thread.currentThread().getStackTrace(), String.format("Error indeterminado en la obtencion de un extractor de campos con separador '%s' y delimitador '%s'", separador_campos, delimitador_campos), e);
+			Logs.warning(Thread.currentThread().getStackTrace(), String.format("Error indeterminado en la obtencion de un extractor de campos con separador '%s' y delimitador '%s'", fieldsSeparator, fieldsDelimiter), e);
 			return null;
 		}//End try
 	}//End getFieldsExtractor
 	
 
 	synchronized BufferedReader getFicheroLectura() throws IOException {
-		BufferedReader vreturn = new BufferedReader(new FileReader (new File (ruta)));
-		if (saltar_lineas > 0) {
-			for(int i = 0; i < saltar_lineas; i++) {
-				vreturn.readLine();
+		BufferedReader returnValue = new BufferedReader(new FileReader (new File (path)));
+		if (skipLines > 0) {
+			for(int i = 0; i < skipLines; i++) {
+				returnValue.readLine();
 			}//End for
 		}//End if
-		return vreturn;
+		return returnValue;
 	}//End getFicheroLectura
 	
-	String getNombreFichero() {
+	String getnameFichero() {
 		try {
-			File archivo = new File(ruta);
-			return archivo.getName();
+			File file = new File(path);
+			return file.getName();
 		}catch (Exception e) {
-			if (Logs.asWarning()) {Logs.warning(Thread.currentThread().getStackTrace(), String.format("No se puede recuperar el nombre del fichero de la ruta: %s", ruta), e);}
+			if (Logs.asWarning()) {Logs.warning(Thread.currentThread().getStackTrace(), String.format("No se puede recuperar el name del fichero de la path: %s", path), e);}
 			return "desconocido";
 		}//End try
-	}//End getNombreFichero
+	}//End getnameFichero
 	
-	boolean isIdentico(FileDescriptor _otro) {
-		int valor_comparacion = 0;
-		valor_comparacion = Math.abs(this.getNombre().compareTo(_otro.getNombre()));
-		valor_comparacion = valor_comparacion + Math.abs(this.getRuta().compareTo(_otro.getRuta()));
-		valor_comparacion = valor_comparacion + Math.abs(this.getDelimitadorCampos().compareTo(_otro.getDelimitadorCampos()));
-		valor_comparacion = valor_comparacion + Math.abs(this.getSeparadorCampos().compareTo(_otro.getSeparadorCampos()));
-		valor_comparacion = valor_comparacion + ((this.getEncabezados().equals(_otro.getEncabezados()))?0:1);
-		valor_comparacion = valor_comparacion + Math.abs(this.getSaltarLineas().compareTo(_otro.getSaltarLineas()));
-		return (valor_comparacion > 0)?false:true;
+	boolean compareToAbs(FileDescriptor _otro) {
+		int compareValue = 0;
+		compareValue = Math.abs(this.getname().compareTo(_otro.getname()));
+		compareValue = compareValue + Math.abs(this.getpath().compareTo(_otro.getpath()));
+		compareValue = compareValue + Math.abs(this.getFieldsDelimiter().compareTo(_otro.getFieldsDelimiter()));
+		compareValue = compareValue + Math.abs(this.getFieldsSeparator().compareTo(_otro.getFieldsSeparator()));
+		compareValue = compareValue + ((this.getheads().equals(_otro.getheads()))?0:1);
+		compareValue = compareValue + Math.abs(this.getSkipLines().compareTo(_otro.getSkipLines()));
+		return (compareValue > 0)?false:true;
 	}//End isIdentico
 	
-	public FileDescriptor(String _ruta, String _separador_campos, String _delimitador_campos) throws IOException{
-		ruta = _ruta;
-		separador_campos = _separador_campos;
-		delimitador_campos = _delimitador_campos;
-		FieldsExtractor e = getFieldsExtractor();
-		BufferedReader r = getFicheroLectura();
-		encabezados = e.get(r.readLine());
-		r.close();
-		saltar_lineas = 1;
+	public FileDescriptor(String _path, String _fieldsSeparator, String _fieldsDelimiter) throws IOException{
+		path = _path;
+		fieldsSeparator = _fieldsSeparator;
+		fieldsDelimiter = _fieldsDelimiter;
+		FieldsExtractor fe = getFieldsExtractor();
+		BufferedReader br = getFicheroLectura();
+		heads = fe.get(br.readLine());
+		br.close();
+		skipLines = 1;
 	}//End Constructor
 	
-	public FileDescriptor(String _ruta, String _separador_campos, String _delimitador_campos, ArrayList<String> _encabezados, Integer _saltar_lineas){
-		ruta = _ruta;
-		separador_campos = _separador_campos;
-		delimitador_campos = _delimitador_campos;
-		encabezados = _encabezados;
-		saltar_lineas = _saltar_lineas;
+	public FileDescriptor(String _path, String _fieldsSeparator, String _fieldsDelimiter, String[] _heads, Integer _skipLines){
+		path = _path;
+		fieldsSeparator = _fieldsSeparator;
+		fieldsDelimiter = _fieldsDelimiter;
+		heads = _heads;
+		skipLines = _skipLines;
 	}//End Constructor
 
 	//implements comparable
-	public int compareTo(DescriptorFichero _otro) {
+	public int compareTo(FileDescriptor _otro) {
 		return this.toString().compareTo(_otro.toString());
 	}//End compareTo
 
 	@Override
 	public String toString() {
-		return nombre;
+		return name;
 	}//End toString
-
 
 }//End FileDescriptor
