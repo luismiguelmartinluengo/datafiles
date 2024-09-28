@@ -16,54 +16,54 @@ public enum Comparator {
 	NOTERMINAPOR("No termina por", false),
 	CONTIENE("Contiene", false),
 	NOCONTIENE("No contiene", false),
-	REGEX("Expresi�n regular",false);
+	REGEX("Expresión regular",false);
 	
-	private String representacion;
-	private Boolean es_numerico;
+	private String mask;
+	private Boolean isNumeric;
 	
-	String getRepresentacion() {
-		return representacion;
-	}//End getRepresentacion
+	String getMask() {
+		return mask;
+	}//End getMask
 	
-	Boolean getEsNumerico() {
-		return es_numerico;
-	}//End getEsNumerico
+	Boolean getIsNumeric() {
+		return isNumeric;
+	}//End getIsNumeric
 	
 	Boolean get(String _a, String _b) {
 		try {
-			Boolean vr;
+			Boolean returnValue;
 			switch (this) {
 				case IGUAL:
-					vr = _a.equals(_b); break;
+					returnValue = _a.equals(_b); break;
 				case MAYORQUE:
-					vr =  _a.compareTo(_b) > 0; break;
+					returnValue =  _a.compareTo(_b) > 0; break;
 				case MAYOROIGUALQUE:
-					vr =  _a.compareTo(_b) >= 0; break;
+					returnValue =  _a.compareTo(_b) >= 0; break;
 				case MENORQUE:
-					vr = _a.compareTo(_b) < 0; break;
+					returnValue = _a.compareTo(_b) < 0; break;
 				case MENOROIGUALQUE:
-					vr = _a.compareTo(_b) <= 0; break;
+					returnValue = _a.compareTo(_b) <= 0; break;
 				case DIFERENTE:
-					vr = !(_a.equals(_b)); break;
+					returnValue = !(_a.equals(_b)); break;
 				case EMPIEZAPOR:
-					vr = _a.startsWith(_b); break;
+					returnValue = _a.startsWith(_b); break;
 				case NOEMPIEZAPOR:
-					vr = !(_a.startsWith(_b)); break;
+					returnValue = !(_a.startsWith(_b)); break;
 				case TERMINAPOR:
-					vr = _a.endsWith(_b); break;
+					returnValue = _a.endsWith(_b); break;
 				case NOTERMINAPOR:
-					vr = !(_a.endsWith(_b)); break;
+					returnValue = !(_a.endsWith(_b)); break;
 				case CONTIENE:
-					vr = _a.contains(_b); break;
+					returnValue = _a.contains(_b); break;
 				case NOCONTIENE:
-					vr = !(_a.contains(_b));  break;
+					returnValue = !(_a.contains(_b));  break;
 				case REGEX:
-					vr = _a.matches(_b);  break;
+					returnValue = _a.matches(_b);  break;
 				default:
-					vr = null;
-					if (Logs.asWarning()) {Logs.warning(Thread.currentThread().getStackTrace(), String.format("Tipo de comparador '%s' no contemplado en el procedimiento get", this.getRepresentacion()));}
+					returnValue = null;
+					if (Logs.asWarning()) {Logs.warning(Thread.currentThread().getStackTrace(), String.format("Tipo de comparador '%s' no contemplado en el procedimiento get", this.getMask()));}
 			}//End switch
-			return vr;
+			return returnValue;
 		}catch (Error e) {
 			Logs.critical(Thread.currentThread().getStackTrace(), "Error indeterminado", e);
 			return null;
@@ -72,38 +72,38 @@ public enum Comparator {
 	
 	Boolean get(Double _a, Double _b) {
 		try {
-			Boolean vr;
+			Boolean returnValue;
 			switch (this) {
 				case IGUAL:
-					vr = _a.equals(_b); break;
+					returnValue = _a.equals(_b); break;
 				case MAYORQUE:
-					vr = _a.compareTo(_b) > 0; break;
+					returnValue = _a.compareTo(_b) > 0; break;
 				case MAYOROIGUALQUE:
-					vr = _a.compareTo(_b) >= 0; break;
+					returnValue = _a.compareTo(_b) >= 0; break;
 				case MENORQUE:
-					vr = _a.compareTo(_b) < 0; break;
+					returnValue = _a.compareTo(_b) < 0; break;
 				case MENOROIGUALQUE:
-					vr = _a.compareTo(_b) <= 0; break;
+					returnValue = _a.compareTo(_b) <= 0; break;
 				case DIFERENTE:
-					vr = !(_a.equals(_b)); break;
+					returnValue = !(_a.equals(_b)); break;
 				case EMPIEZAPOR: case NOEMPIEZAPOR: case TERMINAPOR: case NOTERMINAPOR: case CONTIENE: case NOCONTIENE: case REGEX:
-					vr = null;
-					if (Logs.asWarning()) {Logs.warning(Thread.currentThread().getStackTrace(), String.format("Comparador '%s' incompatible con valores num�rcios: %d y %d",  this.getRepresentacion(), _a, _b));}
+					returnValue = null;
+					if (Logs.asWarning()) {Logs.warning(Thread.currentThread().getStackTrace(), String.format("Comparador '%s' incompatible con valores num�rcios: %d y %d",  this.getMask(), _a, _b));}
 					break;
 				default:
-					vr = null;
-					if (Logs.asWarning()) {Logs.warning(Thread.currentThread().getStackTrace(), String.format("Tipo de comparador '%s' no contemplado en el procedimiento get", this.getRepresentacion()));}
+					returnValue = null;
+					if (Logs.asWarning()) {Logs.warning(Thread.currentThread().getStackTrace(), String.format("Tipo de comparador '%s' no contemplado en el procedimiento get", this.getMask()));}
 			}//End switch
-			return vr;
+			return returnValue;
 		}catch (Error e) {
 			Logs.critical(Thread.currentThread().getStackTrace(), "Error indeterminado", e);
 			return null;
 		}//End try
 	}//End get para n�meros
 	
-	Comparator(String _representacion, Boolean _es_numerico){
-		representacion = _representacion;
-		es_numerico = _es_numerico;
+	Comparator(String _mask, Boolean _isNumeric){
+		mask = _mask;
+		isNumeric = _isNumeric;
 	}//End Constructor
 
 }//End  Comparator
