@@ -59,20 +59,20 @@ public class FilterGroup implements IFilter{
         }//End if
     }//createEvaluator
 
-    void add(IFilter _filter){
+    public void add(IFilter _filter){
         evaluator.add(_filter);
     }//End add
 
-    void addAll(IFilter[] _filters){
+    public void addAll(IFilter[] _filters){
         evaluator.addAll(_filters);
     }//End addAll
 
-    FilterGroup (IFilter _filtro, boolean _isAndFilterGroup){
+    public FilterGroup (IFilter _filtro, boolean _isAndFilterGroup){
         this.createEvaluator(_isAndFilterGroup);
         evaluator.add(_filtro);
     }//End Constructor
 
-    FilterGroup(IFilter[] _filters, boolean _isAndFilterGroup){
+    public FilterGroup(IFilter[] _filters, boolean _isAndFilterGroup){
         this.createEvaluator(_isAndFilterGroup);
         evaluator.addAll(_filters);
     }//End Constructor

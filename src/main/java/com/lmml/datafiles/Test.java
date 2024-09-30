@@ -23,4 +23,37 @@ public class Test {
         }//End for
     }//
 
+    static void runFilterTest(){
+        /*
+        Las condiciones de los filtros se configuran 
+        para que devuelva true si se cumplen todas estas condiciones en el registro:
+            - El campo 0 es igual a "Hola" y el campo 1 es diferente de "pepe";
+            - El campo 2 contiene "a" y el campo 3 empieza por "e", o el campo 2 tiene longitud 3;
+            - El campo 1 termina por "e"
+        En pseudo código sería:
+            (0=Hola and 1!=pepe)
+            and ((2_Contains_a and 3_startwith_e)
+                or 2_length_3)
+            and 1_endswith_e
+        */
+        String[] record = {"Hola","que","tal","estas"};
+        FilterGroup finalFilterGroup;
+        Filter equalFilter = new Filter(Comparator.IGUAL, 0, "Hola");
+        Filter diffFilter = new Filter(Comparator.DIFERENTE, 1, "pepe");
+        Filter[] arrayEqualDiffFilters = {equalFilter,diffFilter}; //addicción
+        FilterGroup andFilterGroup = new FilterGroup(arrayEqualDiffFilters, true);
+        Filter containsFilter = new Filter(Comparator.CONTIENE, 2,"a");
+        Filter startWithFilter = new Filter(Comparator.EMPIEZAPOR, 3, "e");
+        FilterGroup andFilterGroupIn = new FilterGroup(containsFilter, true);
+        andFilterGroupIn.add(startWithFilter);
+        Filter regexFilter = new Filter(Comparator.REGEX, 2, ".{3}");
+        FilterGroup orFilterGroupOut = new FilterGroup(andFilterGroupIn, false);
+        orFilterGroupOut.add(regexFilter);
+        Filter endWithFilter = new Filter(Comparator.TERMINAPOR, 1, "e");
+        finalFilterGroup = new FilterGroup(andFilterGroup, true);
+        finalFilterGroup.add(orFilterGroupOut);
+        finalFilterGroup.add(endWithFilter);
+        System.out.println(finalFilterGroup.getEvaluation(record));
+    }//End runFilterTest
+
 }//Test

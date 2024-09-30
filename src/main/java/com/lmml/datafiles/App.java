@@ -8,8 +8,9 @@ public class App
 
         Logs.changeLevel(Logs.NO_LOGS_LEVEL);
         
-        Test.runDataframeTests();
-        Test.runFieldExtractorTests();
-
+        //Test.runDataframeTests();
+        //Test.runFieldExtractorTests();
+        Test.runFilterTest();
+        
     }//End main
 }//End App
