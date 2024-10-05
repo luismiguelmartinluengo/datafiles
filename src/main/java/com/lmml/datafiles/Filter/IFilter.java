@@ -1,4 +1,4 @@
-package com.lmml.datafiles.Explorer;
+package com.lmml.datafiles.Filter;
 
 public interface IFilter {
 

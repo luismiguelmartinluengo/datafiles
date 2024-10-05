@@ -1,4 +1,4 @@
-package com.lmml.datafiles.Explorer;
+package com.lmml.datafiles.Filter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
