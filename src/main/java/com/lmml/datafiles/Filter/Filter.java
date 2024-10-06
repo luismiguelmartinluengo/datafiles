@@ -2,12 +2,12 @@ package com.lmml.datafiles.Filter;
 
 public class Filter implements IFilter{
 
-    ComparatorOld comparator;
+    Comparator comparator;
     int indexField;
     String expression;
 
-    public Filter (ComparatorOld _comparator, int _indexField, String _expression){
-        comparator = _comparator;
+    public Filter (ComparatorType _comparatorType, int _indexField, String _expression){
+        comparator = new Comparator(_comparatorType);
         indexField = _indexField;
         expression  = _expression;
     }//End Constructor

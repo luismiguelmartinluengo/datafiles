@@ -2,7 +2,7 @@ package com.lmml.datafiles;
 
 import com.lmml.datafiles.DataFrame.*;
 import com.lmml.datafiles.Explorer.*;
-import com.lmml.datafiles.Filter.ComparatorOld;
+import com.lmml.datafiles.Filter.ComparatorType;
 import com.lmml.datafiles.Filter.Filter;
 import com.lmml.datafiles.Filter.FilterGroup;
 import com.lmml.datafiles.Util.Logs;
@@ -41,18 +41,18 @@ public class Test {
         */
         String[] record = {"Hola","que","tal","estas"};
         FilterGroup finalFilterGroup;
-        Filter equalFilter = new Filter(ComparatorOld.IGUAL, 0, "Hola");
-        Filter diffFilter = new Filter(ComparatorOld.DIFERENTE, 1, "pepe");
+        Filter equalFilter = new Filter(ComparatorType.IGUAL, 0, "Hola");
+        Filter diffFilter = new Filter(ComparatorType.DIFERENTE, 1, "pepe");
         Filter[] arrayEqualDiffFilters = {equalFilter,diffFilter}; //addicción
         FilterGroup andFilterGroup = new FilterGroup(arrayEqualDiffFilters, true);
-        Filter containsFilter = new Filter(ComparatorOld.CONTIENE, 2,"a");
-        Filter startWithFilter = new Filter(ComparatorOld.EMPIEZAPOR, 3, "e");
+        Filter containsFilter = new Filter(ComparatorType.CONTIENE, 2,"a");
+        Filter startWithFilter = new Filter(ComparatorType.EMPIEZAPOR, 3, "e");
         FilterGroup andFilterGroupIn = new FilterGroup(containsFilter, true);
         andFilterGroupIn.add(startWithFilter);
-        Filter regexFilter = new Filter(ComparatorOld.REGEX, 2, ".{3}");
+        Filter regexFilter = new Filter(ComparatorType.REGEX, 2, ".{3}");
         FilterGroup orFilterGroupOut = new FilterGroup(andFilterGroupIn, false);
         orFilterGroupOut.add(regexFilter);
-        Filter endWithFilter = new Filter(ComparatorOld.TERMINAPOR, 1, "e");
+        Filter endWithFilter = new Filter(ComparatorType.TERMINAPOR, 1, "e");
         finalFilterGroup = new FilterGroup(andFilterGroup, true);
         finalFilterGroup.add(orFilterGroupOut);
         finalFilterGroup.add(endWithFilter);
