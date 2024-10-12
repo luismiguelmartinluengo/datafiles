@@ -1,0 +1,12 @@
+/workspaces/datafiles/src/main/java/com/lmml/datafiles/DataFrame/Dataframe.java
+/workspaces/datafiles/src/main/java/com/lmml/datafiles/App.java
+/workspaces/datafiles/src/main/java/com/lmml/datafiles/Explorer/FieldsExtractor.java
+/workspaces/datafiles/src/main/java/com/lmml/datafiles/Util/Logs.java
+/workspaces/datafiles/src/main/java/com/lmml/datafiles/DataFrame/Serie.java
+/workspaces/datafiles/src/main/java/com/lmml/datafiles/Filter/IFilter.java
+/workspaces/datafiles/src/main/java/com/lmml/datafiles/Filter/FilterGroup.java
+/workspaces/datafiles/src/main/java/com/lmml/datafiles/Explorer/FileDescriptor.java
+/workspaces/datafiles/src/main/java/com/lmml/datafiles/Test.java
+/workspaces/datafiles/src/main/java/com/lmml/datafiles/Filter/ComparatorType.java
+/workspaces/datafiles/src/main/java/com/lmml/datafiles/Filter/Comparator.java
+/workspaces/datafiles/src/main/java/com/lmml/datafiles/Filter/Filter.java

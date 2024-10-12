@@ -18,6 +18,8 @@ public enum ComparatorType {
 
     String mask;
 
+
+
     ComparatorType(String _mask){
         mask = _mask;
     }//End Constructor
