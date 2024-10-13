@@ -287,4 +287,24 @@ public class ComparatorTest {
         assertEquals(result, expectedResult);
     }//End test
 
+    @Test
+    public void comparatorDifferentPass_abc_abc_ReturnFalse() {
+        Comparator comparator = new Comparator(ComparatorType.DIFERENTE);
+        String valueA = "abc";
+        String valueB = "abc";
+        boolean expectedResult = false;
+        boolean result = comparator.get(valueA, valueB);
+        assertEquals(result, expectedResult);
+    }//End test
+
+    @Test
+    public void comparatorDifferentPass_abc_def_ReturnTrue() {
+        Comparator comparator = new Comparator(ComparatorType.DIFERENTE);
+        String valueA = "abc";
+        String valueB = "def";
+        boolean expectedResult = true;
+        boolean result = comparator.get(valueA, valueB);
+        assertEquals(result, expectedResult);
+    }//End test
+
 }//End ComparatorTest
