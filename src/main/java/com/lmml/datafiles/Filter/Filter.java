@@ -6,7 +6,7 @@ public class Filter implements IFilter{
     int indexField;
     String expression;
 
-    public Filter (ComparatorType _comparatorType, int _indexField, String _expression){
+    public Filter (int _indexField, ComparatorType _comparatorType, String _expression){
         comparator = new Comparator(_comparatorType);
         indexField = _indexField;
         expression  = _expression;
@@ -14,7 +14,11 @@ public class Filter implements IFilter{
 
     @Override
     public boolean getEvaluation(String[] _values) {
-        return comparator.get(_values[indexField], expression);
+        if (_values.length > indexField){
+            return comparator.get(_values[indexField], expression);
+        }else{
+            return false;
+        }//End if
     }//End getEvaluation
 
     @Override

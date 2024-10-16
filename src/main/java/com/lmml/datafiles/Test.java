@@ -41,18 +41,18 @@ public class Test {
         */
         String[] record = {"Hola","que","tal","estas"};
         FilterGroup finalFilterGroup;
-        Filter equalFilter = new Filter(ComparatorType.IGUAL, 0, "Hola");
-        Filter diffFilter = new Filter(ComparatorType.DIFERENTE, 1, "pepe");
+        Filter equalFilter = new Filter(0, ComparatorType.IGUAL, "Hola");
+        Filter diffFilter = new Filter(1, ComparatorType.DIFERENTE,  "pepe");
         Filter[] arrayEqualDiffFilters = {equalFilter,diffFilter}; //addicción
         FilterGroup andFilterGroup = new FilterGroup(arrayEqualDiffFilters, true);
-        Filter containsFilter = new Filter(ComparatorType.CONTIENE, 2,"a");
-        Filter startWithFilter = new Filter(ComparatorType.EMPIEZAPOR, 3, "e");
+        Filter containsFilter = new Filter(2, ComparatorType.CONTIENE, "a");
+        Filter startWithFilter = new Filter(3, ComparatorType.EMPIEZAPOR,  "e");
         FilterGroup andFilterGroupIn = new FilterGroup(containsFilter, true);
         andFilterGroupIn.add(startWithFilter);
-        Filter regexFilter = new Filter(ComparatorType.REGEX, 2, ".{3}");
+        Filter regexFilter = new Filter(2,ComparatorType.REGEX,  ".{3}");
         FilterGroup orFilterGroupOut = new FilterGroup(andFilterGroupIn, false);
         orFilterGroupOut.add(regexFilter);
-        Filter endWithFilter = new Filter(ComparatorType.TERMINAPOR, 1, "e");
+        Filter endWithFilter = new Filter(1,ComparatorType.TERMINAPOR,  "e");
         finalFilterGroup = new FilterGroup(andFilterGroup, true);
         finalFilterGroup.add(orFilterGroupOut);
         finalFilterGroup.add(endWithFilter);
