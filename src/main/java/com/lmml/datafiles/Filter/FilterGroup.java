@@ -17,6 +17,14 @@ public class FilterGroup implements IFilter{
             filters.addAll(Arrays.asList(_filtros));
         }//End addAll
 
+        int getMaxIndexField(){
+            int maxIndexField = 0;
+            for(IFilter filter: filters){
+                maxIndexField = Math.max(maxIndexField, filter.getMaxIndexField());
+            }//End for
+            return maxIndexField;
+        }//End 
+
         abstract boolean getEvaluation(String[] _values);
 
     }//End FilterGroupEvalutar
@@ -81,5 +89,10 @@ public class FilterGroup implements IFilter{
     public boolean getEvaluation(String[] _values) {
         return evaluator.getEvaluation(_values);
     }//End getEvaluation
+
+    @Override
+    public int getMaxIndexField() {
+        return evaluator.getMaxIndexField();
+    }//End getMaxIndexField
 
 }//End Filters

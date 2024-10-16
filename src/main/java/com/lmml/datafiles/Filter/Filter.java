@@ -16,6 +16,11 @@ public class Filter implements IFilter{
     public boolean getEvaluation(String[] _values) {
         return comparator.get(_values[indexField], expression);
     }//End getEvaluation
+
+    @Override
+    public int getMaxIndexField() {
+        return indexField;
+    }//End getMaxIndexField
     
 
 }//End Filter
