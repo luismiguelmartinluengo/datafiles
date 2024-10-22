@@ -44,7 +44,9 @@ public class FieldsExtractor {
 	}//End get
 
     private String sep_del_adapter(String _sd) {
-		ArrayList<String> specials = new ArrayList<String>(Arrays.asList(specialsStrings));;
+		ArrayList<String> specials = new ArrayList<String>(Arrays.asList(specialsStrings));
+		/*No debería hacer falta crear el ArrayList. Se debería poder evaluar así:
+		Arrays.AsList(specials).contains(_sd)*/
 		if (specials.contains(_sd)) {
 			return "\\" + _sd;
 		}else {
