@@ -13,8 +13,8 @@ public class FileDescriptor {
 
     private String name = "Sin nombre";
 	private String path;
-	private String fieldsSeparator;
-	private String fieldsDelimiter;
+	private Character fieldsSeparator;
+	private Character fieldsDelimiter = null;
 	private String[] heads;
 	private Integer skipLines = 0;
 	private Integer numLines;
@@ -35,13 +35,13 @@ public class FileDescriptor {
 	
 	String getpath() {return path;}//End getpath
 	
-	void setFieldsSeparator(String _fieldsSeparator) {fieldsSeparator = _fieldsSeparator;}//End setFieldsSeparator
+	void setFieldsSeparator(Character _fieldsSeparator) {fieldsSeparator = _fieldsSeparator;}//End setFieldsSeparator
 	
-	String getFieldsSeparator() {return fieldsSeparator;}//End getFieldsSeparator
+	Character getFieldsSeparator() {return fieldsSeparator;}//End getFieldsSeparator
 	
-	void setFieldsDelimiter(String _fieldsDelimiter) {fieldsDelimiter = _fieldsDelimiter;}//End setFieldsDelimiter
+	void setFieldsDelimiter(Character _fieldsDelimiter) {fieldsDelimiter = _fieldsDelimiter;}//End setFieldsDelimiter
 	
-	String getFieldsDelimiter() {return fieldsDelimiter;}//End getFieldsDelimiter
+	Character getFieldsDelimiter() {return fieldsDelimiter;}//End getFieldsDelimiter
 	
 	void setheads(String[] _heads) {heads = _heads;}//End setheads
 	
@@ -112,7 +112,7 @@ public class FileDescriptor {
 		return (compareValue > 0)?false:true;
 	}//End isIdentico
 	
-	public FileDescriptor(String _path, String _fieldsSeparator, String _fieldsDelimiter) throws IOException{
+	public FileDescriptor(String _path, Character _fieldsSeparator, Character _fieldsDelimiter) throws IOException{
 		path = _path;
 		fieldsSeparator = _fieldsSeparator;
 		fieldsDelimiter = _fieldsDelimiter;
@@ -123,7 +123,7 @@ public class FileDescriptor {
 		skipLines = 1;
 	}//End Constructor
 	
-	public FileDescriptor(String _path, String _fieldsSeparator, String _fieldsDelimiter, String[] _heads, Integer _skipLines){
+	public FileDescriptor(String _path, Character _fieldsSeparator, Character _fieldsDelimiter, String[] _heads, Integer _skipLines){
 		path = _path;
 		fieldsSeparator = _fieldsSeparator;
 		fieldsDelimiter = _fieldsDelimiter;

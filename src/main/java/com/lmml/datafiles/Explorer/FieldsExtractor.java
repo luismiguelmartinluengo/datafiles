@@ -1,5 +1,6 @@
 package com.lmml.datafiles.Explorer;
 
+import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -7,85 +8,95 @@ public class FieldsExtractor {
 
 	private abstract class InnerFieldsExtractor{
 
-		String separator;
-
-        abstract String[] get(String _string);
+		abstract String[] get(String _string);
 
     }//End InnerComparator
 
 	private class InnerFieldsExtractorWithoutDelimiter extends InnerFieldsExtractor {
 
-		InnerFieldsExtractorWithoutDelimiter(String _separator){
+		char separator;
+
+		InnerFieldsExtractorWithoutDelimiter(char _separator){
 			separator = _separator;
 		}//End Constructor
 		
 		@Override
 		String[] get(String _string) {
-			return _string.split(separator);
+			ArrayList<String> secuences = new ArrayList<String>();
+			StringBuffer currentSecuence = new StringBuffer();
+			for(char c: _string.toCharArray()){
+				if (c==separator){
+					secuences.add(currentSecuence.toString());
+					currentSecuence = new StringBuffer();
+				}else{
+					currentSecuence.append(c);
+				}//End if
+			}//End for
+			secuences.add(currentSecuence.toString());
+			return secuences.toArray(new String[secuences.size()]);
 		}//End get
 
 	}//End InnerFieldsExtractorWithoutDelimiter
 
 	private class InnerFieldsExtractorWithDelimiter extends InnerFieldsExtractor {
 
-		String delimiter;
+		char separator;
+		char delimiter;
 
-		InnerFieldsExtractorWithDelimiter(String _separator, String _delimiter){
+		InnerFieldsExtractorWithDelimiter(char _separator, char _delimiter){
 			separator = _separator;
 			delimiter = _delimiter;
 		}//End Constructor
 		
 		@Override
 		String[] get(String _string) {
-			ArrayList<String> listafinal = new ArrayList<String>();
-			String linea_ampliada = separator + _string + separator;
-			String[] listadel = linea_ampliada.split(delimiter);
-			for (int i = 0;i<listadel.length;i++) {
-				if (!listadel[i].equals(separator)) {
-					String valordel = listadel[i];
-					if (valordel.startsWith(separator) & valordel.endsWith(separator)) {
-						valordel = valordel.substring(1, valordel.length()-1);
-						String[] listasep = valordel.split(separator);
-						for (int j=0;j<listasep.length;j++ ) {
-							listafinal.add(listasep[j]);
-						}//End for
-					}else {
-						listafinal.add(listadel[i]);
+			ArrayList<String> secuences = new ArrayList<String>();
+			StringBuffer chars = new StringBuffer(separator);
+			chars.append(_string);
+			chars.append(separator);
+			StringBuffer currentSecuence = new StringBuffer();
+			char currentChar;
+			boolean isDelimiterOpen = false;
+			for(int i = 1; i<chars.length()-1; i++){
+				currentChar = chars.charAt(i);
+				if(currentChar==separator){
+					if(isDelimiterOpen){
+						currentSecuence.append(currentChar);
+					}else{
+						secuences.add(currentSecuence.toString());
+						currentSecuence = new StringBuffer();
 					}//End if
+				}else if (currentChar==delimiter){
+					if(chars.charAt(i-1)==separator){
+						isDelimiterOpen = true;
+					}else if (chars.charAt(i+1) == separator){
+						isDelimiterOpen = false;
+					}else{
+						currentSecuence.append(currentChar);
+					}//End if
+				}else{
+					currentSecuence.append(currentChar);
 				}//End if
 			}//End for
-			return listafinal.toArray(new String[listafinal.size()]);
+			secuences.add(currentSecuence.toString());
+			return secuences.toArray(new String[secuences.size()]);
 		}//End get
 
 	}//End InnerFieldsExtractorWithDelimiter
 
 
 	private InnerFieldsExtractor innerFieldsExtractor;
-	private String[] specialsStrings = {"|","\""};
-    
+	
     public String[] get(String _string){
 		return innerFieldsExtractor.get(_string);
 	}//End get
-
-    private String sep_del_adapter(String _sd) {
-		if (Arrays.asList(specialsStrings).contains(_sd)){
-			return "\\" + _sd;
-		}else {
-			return _sd;
-		}//End if
-	}//End sep_del_adapter
     
-    public FieldsExtractor(String _separator, String _delimiter){
-		String adaptedDelimiter = sep_del_adapter(_delimiter);
-		if (adaptedDelimiter.length()>0) {
-			innerFieldsExtractor = new InnerFieldsExtractorWithDelimiter(sep_del_adapter(_separator), adaptedDelimiter);
-		}else {
-			innerFieldsExtractor = new InnerFieldsExtractorWithoutDelimiter(sep_del_adapter(_separator));
-	}//End if
+    public FieldsExtractor(char _separator, char _delimiter){
+		innerFieldsExtractor = new InnerFieldsExtractorWithDelimiter(_separator, _delimiter);
 	}//End Constructor
 	
-	public FieldsExtractor(String _separator){
-		innerFieldsExtractor = new InnerFieldsExtractorWithoutDelimiter(sep_del_adapter(_separator));
+	public FieldsExtractor(char _separator){
+		innerFieldsExtractor = new InnerFieldsExtractorWithoutDelimiter(_separator);
 	}//End Constructor
 
 }//End FileExtractor
