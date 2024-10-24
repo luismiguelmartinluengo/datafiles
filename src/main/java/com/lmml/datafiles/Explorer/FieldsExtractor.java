@@ -1,8 +1,6 @@
 package com.lmml.datafiles.Explorer;
 
-import java.nio.CharBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class FieldsExtractor {
 
@@ -51,9 +49,8 @@ public class FieldsExtractor {
 		@Override
 		String[] get(String _string) {
 			ArrayList<String> secuences = new ArrayList<String>();
-			StringBuffer chars = new StringBuffer(separator);
-			chars.append(_string);
-			chars.append(separator);
+			StringBuffer chars = new StringBuffer();
+			chars.append(separator).append(_string).append(separator);
 			StringBuffer currentSecuence = new StringBuffer();
 			char currentChar;
 			boolean isDelimiterOpen = false;

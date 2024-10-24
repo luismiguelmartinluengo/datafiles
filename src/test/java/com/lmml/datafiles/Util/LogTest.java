@@ -307,6 +307,22 @@ public class LogTest {
         assertTrue(lastLogLine.contains(";2;"));
     }//End test
 
+    @Test
+    public void testCloseResultLastLogLineContainsLOGS_DESACTIVADOS() {
+        Logs.changeLevel(Logs.CRITICAL_LEVEL);
+        String previousLogLine = Logs.lastLogLine();
+        try{
+            Logs.close();
+            String lastLogLine = Logs.lastLogLine();
+            String lastLogLineFromFile = Logs.lastLogLineFromFile();
+            assertNotEquals(previousLogLine, lastLogLine);
+            assertTrue(lastLogLine.contains("LOGS DESACTIVADOS"));
+            assertEquals(lastLogLine, lastLogLineFromFile);
+        }catch (Exception e){
+            assertTrue(false);
+        }//End try
+    }//End test
+
 
 
 

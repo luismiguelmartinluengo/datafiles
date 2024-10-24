@@ -1,8 +1,5 @@
 package com.lmml.datafiles.Explorer;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
@@ -35,12 +32,41 @@ public class FieldsExtractorTest {
         assertTrue(Arrays.equals(expectedResult, result));
     }//End test
 
-    /*hay que probrar la extracción se separador y delimitador para cadenas que
-     * no incluyan delimitadores en todos los campos, otra prueba en una cadena que 
-     * deje algún campo en blanco, incluyendo el primero y el último
-     * y para terminar una prueba con una cadena que deje algun campo sin delimitadores y
-     * que también tenga campos en blanco
-     */
+    @Test
+    public void testGetSeparatorCommaDelimiterSingleQuoteInOnlySomeFields() {
+        String testString = "'Hola','que',tal";
+        String[] expectedResult = {"Hola","que","tal"};
+        FieldsExtractor fieldsExtractor = new FieldsExtractor(',','\'');
+        String[] result = fieldsExtractor.get(testString);
+        assertTrue(Arrays.equals(expectedResult, result));
+    }//End test
+
+    @Test
+    public void testGetSeparatorCommaDelimiterSingleQuoteWithBlanks() {
+        String testString = "'','Hola','que','','tal',''";
+        String[] expectedResult = {"","Hola","que","","tal",""};
+        FieldsExtractor fieldsExtractor = new FieldsExtractor(',','\'');
+        String[] result = fieldsExtractor.get(testString);
+        assertTrue(Arrays.equals(expectedResult, result));
+    }//End test
+
+    @Test
+    public void testGetSeparatorCommaDelimiterSingleQuoteInOnlySomeFieldsAndWithBlanks() {
+        String testString = ",'Hola',,'que','','tal',";
+        String[] expectedResult = {"","Hola","","que","","tal",""};
+        FieldsExtractor fieldsExtractor = new FieldsExtractor(',','\'');
+        String[] result = fieldsExtractor.get(testString);
+        assertTrue(Arrays.equals(expectedResult, result));
+    }//End test
+
+    @Test
+    public void testGetSeparatorCommaDelimiterSingleQuoteInOnlySomeFieldsAndWithBlanksAndSeparatorIntoDelimitedFields() {
+        String testString = ",'Hola',,'que','','tal,estas',";
+        String[] expectedResult = {"","Hola","","que","","tal,estas",""};
+        FieldsExtractor fieldsExtractor = new FieldsExtractor(',','\'');
+        String[] result = fieldsExtractor.get(testString);
+        assertTrue(Arrays.equals(expectedResult, result));
+    }//End test
 
     @Test
     public void testGetSeparatorSemicolonWithoutDelimiter() {
@@ -78,64 +104,40 @@ public class FieldsExtractorTest {
         assertTrue(Arrays.equals(expectedResult, result));
     }//End test
 
-    /*
     @Test
-    public void testGetSeparatorPipeWithDelimiterDoubleQuote() {
-        String testString = "\"Hola\"|\"que\"|\"tal\"";
-        String[] expectedResult = {"Hola","que","tal"};
-        FieldsExtractor fieldsExtractor = new FieldsExtractor("|","\"");
+    public void testGetComplexSeparatorTabDelimiterDoubleQuote() {
+        String testString = "\t\"Hola\"\tque\t\t\"t\tal\"\t";
+        String[] expectedResult = {"","Hola","que","","t\tal",""};
+        FieldsExtractor fieldsExtractor = new FieldsExtractor('\t', '\"');
         String[] result = fieldsExtractor.get(testString);
         assertTrue(Arrays.equals(expectedResult, result));
     }//End test
 
     @Test
-    public void testGetSeparatorPipeWithDelimiterDoubleQuoteIncludingPipeInFields() {
-        assertTrue(false);
-    }//End test
-
-    @Test
-    public void testGetSeparatorTabWithoutDelimiter() {
-        String testString = "Hola\tque\ttal";
-        String[] expectedResult = {"Hola","que","tal"};
-        FieldsExtractor fieldsExtractor = new FieldsExtractor("\t");
+    public void testGetComplexSeparatorPipeDelimiterPad() {
+        String testString = "|#Hola#|que||#t|al#|";
+        String[] expectedResult = {"","Hola","que","","t|al",""};
+        FieldsExtractor fieldsExtractor = new FieldsExtractor('|', '#');
         String[] result = fieldsExtractor.get(testString);
         assertTrue(Arrays.equals(expectedResult, result));
     }//End test
 
     @Test
-    public void testGetSeparatorTabWithDelimiterSingleQuote() {
-        String testString = "'Hola'\t'que'\t'tal'";
-        String[] expectedResult = {"Hola","que","tal"};
-        FieldsExtractor fieldsExtractor = new FieldsExtractor("\t","'");
+    public void testGetComplexSeparatorBackSlashDelimiterForwardSlash() {
+        String testString = "\\/Hola/\\que\\\\/t\\al/\\";
+        String[] expectedResult = {"","Hola","que","","t\\al",""};
+        FieldsExtractor fieldsExtractor = new FieldsExtractor('\\', '/');
         String[] result = fieldsExtractor.get(testString);
         assertTrue(Arrays.equals(expectedResult, result));
     }//End test
 
     @Test
-    public void testGetSeparatorTabWithDelimiterSingleQuoteIncludingTabinFields() {
-        String testString = "'Hola'\t'q\tue'\t'tal'";
-        String[] expectedResult = {"Hola","q\tue","tal"};
-        FieldsExtractor fieldsExtractor = new FieldsExtractor("\t","'");
+    public void testGetBlankString() {
+        String testString = "";
+        String[] expectedResult = {""};
+        FieldsExtractor fieldsExtractor = new FieldsExtractor(',', '\"');
         String[] result = fieldsExtractor.get(testString);
         assertTrue(Arrays.equals(expectedResult, result));
     }//End test
-
-    @Test
-    public void testGetSeparatorSemicolonWithDelimiterOnlyFirstField() {
-        assertTrue(false);
-    }//End test
-
-    @Test
-    public void testGetSeparatorSemicolonWithDelimiterOnlySecondField() {
-        assertTrue(false);
-    }//End test
-
-    @Test
-    public void testGetSeparatorSemicolonWithDelimiterOnlyLastField() {
-        assertTrue(false);
-    }//End test
-    */
-
-    //¿lo tengo preparado para separador de varios caracteres?
 
 }//End LogTest

@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Logs implements AutoCloseable{
+public class Logs{
 
 	public final static int NO_LOGS_LEVEL = 0;
     public final static int INFO_LEVEL = 1;
@@ -23,7 +23,6 @@ public class Logs implements AutoCloseable{
 	private static int id_log = -1;
     private static boolean started = false;
 	private static String logString = "";
-	
 
     public static String lastLogLineFromFile(){
         /*Defino el método para poder testear que se está escribiendo la información
@@ -183,13 +182,14 @@ public class Logs implements AutoCloseable{
             escritura(_array_stack_trace, "CRITICO", i, _throwable.getMessage());
         }//End if
 	}//End info
-	
-    @Override
-	public void close() throws Exception {
+
+	public static void close() {
 		if (pw != null) {
+			Logs.changeLevel(Logs.NO_LOGS_LEVEL);
 			pw.flush();
 			pw.close();
 		}//End if
-	}//End finalize
+		started = false;
+	}//End close
 
-}
+}//End Logs
