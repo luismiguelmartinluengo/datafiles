@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 
 import com.google.gson.Gson;
 import com.lmml.datafiles.Util.Logs;
@@ -19,9 +20,9 @@ public class FileDescriptor {
 	private Integer skipLines = 0;
 	private Integer numLines;
 	
-	void setname(String _name) {name = _name;}//End setname
+	void setName(String _name) {name = _name;}//End setname
 	
-	public String getname() {return name;}//End getname
+	public String getName() {return name;}//End getname
 	
 	static String getRepositoryName(String _name) {
 		return _name.trim().replaceAll(" ","_").replaceAll("[^a-zA-Z0-9_]", "").toLowerCase();
@@ -31,9 +32,9 @@ public class FileDescriptor {
 		return getRepositoryName(name);
 	}//End getRepositoryName
 	
-	void setpath(String _path) {path = _path;}//End setpath
+	void setPath(String _path) {path = _path;}//End setpath
 	
-	String getpath() {return path;}//End getpath
+	String getPath() {return path;}//End getpath
 	
 	void setFieldsSeparator(Character _fieldsSeparator) {fieldsSeparator = _fieldsSeparator;}//End setFieldsSeparator
 	
@@ -43,9 +44,9 @@ public class FileDescriptor {
 	
 	Character getFieldsDelimiter() {return fieldsDelimiter;}//End getFieldsDelimiter
 	
-	void setheads(String[] _heads) {heads = _heads;}//End setheads
+	void setHeads(String[] _heads) {heads = _heads;}//End setheads
 	
-	String[] getheads(){return heads;}//End getheads
+	String[] getHeads(){return heads;}//End getheads
 	
 	void setSkipLines(Integer _skipLines) {skipLines = _skipLines;}//End setSkipLines
 	
@@ -66,22 +67,16 @@ public class FileDescriptor {
 	}//End copy
 	
 	FieldsExtractor getFieldsExtractor() {
-		try {
-			FieldsExtractor returnValue;
-			if (fieldsDelimiter != null) {
-				returnValue = new FieldsExtractor(fieldsSeparator, fieldsDelimiter);
-			}else {
-				returnValue = new FieldsExtractor(fieldsSeparator);
-			}//End if
-			return returnValue;
-		}catch (Error e) {
-			Logs.warning(Thread.currentThread().getStackTrace(), String.format("Error indeterminado en la obtencion de un extractor de campos con separador '%s' y delimitador '%s'", fieldsSeparator, fieldsDelimiter), e);
-			return null;
-		}//End try
+		FieldsExtractor returnValue;
+		if (fieldsDelimiter != null) {
+			returnValue = new FieldsExtractor(fieldsSeparator, fieldsDelimiter);
+		}else {
+			returnValue = new FieldsExtractor(fieldsSeparator);
+		}//End if
+		return returnValue;
 	}//End getFieldsExtractor
 	
-
-	synchronized BufferedReader getFicheroLectura() throws IOException {
+	synchronized BufferedReader getReader() throws IOException {
 		BufferedReader returnValue = new BufferedReader(new FileReader (new File (path)));
 		if (skipLines > 0) {
 			for(int i = 0; i < skipLines; i++) {
@@ -89,9 +84,9 @@ public class FileDescriptor {
 			}//End for
 		}//End if
 		return returnValue;
-	}//End getFicheroLectura
+	}//End getReader
 	
-	String getnameFichero() {
+	String getFileName() {
 		try {
 			File file = new File(path);
 			return file.getName();
@@ -99,25 +94,46 @@ public class FileDescriptor {
 			if (Logs.asWarning()) {Logs.warning(Thread.currentThread().getStackTrace(), String.format("No se puede recuperar el name del fichero de la path: %s", path), e);}
 			return "desconocido";
 		}//End try
-	}//End getnameFichero
+	}//End getFileName
 	
-	boolean compareToAbs(FileDescriptor _otro) {
+	boolean CompareToAbsolute(FileDescriptor _otro) {
 		int compareValue = 0;
-		compareValue = Math.abs(this.getname().compareTo(_otro.getname()));
-		compareValue = compareValue + Math.abs(this.getpath().compareTo(_otro.getpath()));
-		compareValue = compareValue + Math.abs(this.getFieldsDelimiter().compareTo(_otro.getFieldsDelimiter()));
-		compareValue = compareValue + Math.abs(this.getFieldsSeparator().compareTo(_otro.getFieldsSeparator()));
-		compareValue = compareValue + ((this.getheads().equals(_otro.getheads()))?0:1);
-		compareValue = compareValue + Math.abs(this.getSkipLines().compareTo(_otro.getSkipLines()));
-		return (compareValue > 0)?false:true;
-	}//End isIdentico
+		boolean endsComparation = false;
+		int comparationIndex = 0;
+		do{
+			switch(comparationIndex){
+			case 0:
+				compareValue = this.getName().compareTo(_otro.getName());
+				break;
+			case 1:
+				compareValue = this.getPath().compareTo(_otro.getPath());
+				break;
+			case 2:
+				compareValue = this.getFieldsDelimiter().compareTo(_otro.getFieldsDelimiter());
+				break;
+			case 3:
+				compareValue = this.getFieldsSeparator().compareTo(_otro.getFieldsSeparator());
+				break;
+			case 4:
+				compareValue = (Arrays.equals(this.getHeads(),_otro.getHeads()))?0:1;
+				break;
+			case 5:
+				compareValue = this.getSkipLines().compareTo(_otro.getSkipLines());
+				break;
+			default:
+				endsComparation = true;
+			}//End wwitch
+			comparationIndex++;
+		}while ((compareValue == 0 )&& (endsComparation == false));
+		return compareValue == 0;
+	}//End CompareToAbsolute
 	
 	public FileDescriptor(String _path, Character _fieldsSeparator, Character _fieldsDelimiter) throws IOException{
 		path = _path;
 		fieldsSeparator = _fieldsSeparator;
 		fieldsDelimiter = _fieldsDelimiter;
 		FieldsExtractor fe = getFieldsExtractor();
-		BufferedReader br = getFicheroLectura();
+		BufferedReader br = getReader();
 		heads = fe.get(br.readLine());
 		br.close();
 		skipLines = 1;
