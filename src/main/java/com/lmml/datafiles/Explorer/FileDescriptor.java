@@ -25,7 +25,7 @@ public class FileDescriptor {
 	public String getName() {return name;}//End getname
 	
 	static String getRepositoryName(String _name) {
-		return _name.trim().replaceAll(" ","_").replaceAll("[^a-zA-Z0-9_]", "").toLowerCase();
+		return _name.trim().replaceAll(" ","_").replaceAll("[^a-zA-Z0-9_-]", "").toLowerCase();
 	}//End static getRepositoryName
 	
 	public String getRepositoryName() {

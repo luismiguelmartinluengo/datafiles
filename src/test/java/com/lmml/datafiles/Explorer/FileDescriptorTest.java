@@ -2,18 +2,18 @@ package com.lmml.datafiles.Explorer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Arrays;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 public class FileDescriptorTest {
 
@@ -138,6 +138,44 @@ public class FileDescriptorTest {
         String[] resultExtractedValues = fieldsExtractor.get(testLine);
         assertNotNull(fieldsExtractor);
         assertTrue(Arrays.equals(expedtedExtractedValues, resultExtractedValues));
+    }//End test
+
+    @Test 
+    public void testStaticGetRepositoryName() {
+        String paramFileDescriptorName = "Test nAme-n*a@m$e";
+        String expectedRepoName = "test_name-name"; 
+        String resultRepoName = FileDescriptor.getRepositoryName(paramFileDescriptorName);
+        assertEquals(expectedRepoName, resultRepoName);
+    }//End test
+
+    @Test 
+    public void testInstanceGetRepositoryName() {
+        String paramFileDescriptoName = "Test nAme-n*a@m$e";
+        fileDescriptor.setName(paramFileDescriptoName);
+        String expectedRepoName = "test_name-name"; 
+        String resultRepoName = fileDescriptor.getRepositoryName();
+        assertEquals(expectedRepoName, resultRepoName);
+    }//End test
+
+    @Test 
+    public void testSetNumLinesAndGetNumLines() {
+        int newNumLines = 500;
+        fileDescriptor.setNumLines(newNumLines);
+        int result = fileDescriptor.getNumLines();
+        assertEquals(newNumLines, result);
+    }//End test
+
+    @Test
+    public void testCopyReturnIdenticalFileDescriptor(){
+        otherFileDescriptor = fileDescriptor.copy();
+        assertTrue(fileDescriptor.CompareToAbsolute(otherFileDescriptor));
+    }//End test
+
+    @Test
+    public void testAsJsonReturnValidatedJson(){
+        String fileDescriptorJson = fileDescriptor.asJson();
+        JsonElement jsonElement = JsonParser.parseString(fileDescriptorJson);
+        assertTrue(jsonElement.isJsonObject() || jsonElement.isJsonArray());
     }//End test
 
 }//End FileDescriptorTest
