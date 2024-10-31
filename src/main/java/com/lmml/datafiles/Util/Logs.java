@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Logs{
+public abstract class Logs{
 
 	public final static int NO_LOGS_LEVEL = 0;
     public final static int INFO_LEVEL = 1;

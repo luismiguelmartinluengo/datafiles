@@ -5,10 +5,14 @@ import java.util.Arrays;
 
 public class Serie {
 
-    public String name = "";
+    private String name = "";
     private int consoleWidth = -1; //todos los métodos que alteren el contenido de data tienen que poner este valor a -1
     
     private ArrayList<String> data = new ArrayList<String>();
+
+    public String getName(){
+        return name;
+    }//End getName
 
     public void add(String _value){
         data.add(_value);
@@ -16,11 +20,11 @@ public class Serie {
     }//End add
 
     public String getString(int _index){
+        String returnValue = null;
         if (data.size()> _index){
-            return data.get(_index).toString();
-        }else{
-            return "";
+            returnValue = data.get(_index);
         }//End getString
+        return (returnValue == null)?"":returnValue;
     }//End
 
     int getSize(){
@@ -38,10 +42,12 @@ public class Serie {
 
     private void calculateWidthConsoleOutput(){
         int width = name.length();
-            for (String d: data){
+        for (String d: data){
+            if (d != null) {
                 width = Math.max(width, d.length());
-            }//End for
-            consoleWidth = width;
+            }//End if
+        }//End for
+        consoleWidth = width;
     }//End calculateWidthConsoleOutput
     
     String getConsoleName(){

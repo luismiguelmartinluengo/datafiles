@@ -15,7 +15,7 @@ public class Dataframe {
     }//End getRecordCount
     
     void addRecord(String[] _values){
-        /*Aáde un elemento del registro pasado por parámetro a cada una de las series del Dataframe
+        /*Añade un elemento del registro pasado por parámetro a cada una de las series del Dataframe
          * Si se pasan más valores en el registro que series existentes, se descartan los datos que sobren por la derecha
          * Si no se pasan valores para todas las series, se rellenan las últims con valor nulo
          */
@@ -27,6 +27,15 @@ public class Dataframe {
             series.get(i).add(null);
         }//End for
     }//End addRecord
+
+    String getString(int _indexSerie, int _indexRecord){
+        if (series.size() > _indexSerie && getRecordCount() > _indexRecord){
+            return series.get(_indexSerie).getString(_indexRecord);
+        }else{
+            return "";
+        }//End if
+
+    }//End getString
 
     public void writeConsole(){
         StringBuffer output = new StringBuffer();
