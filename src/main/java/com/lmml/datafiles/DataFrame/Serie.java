@@ -23,9 +23,13 @@ public class Serie {
         String returnValue = null;
         if (data.size()> _index){
             returnValue = data.get(_index);
-        }//End getString
+        }//End if
         return (returnValue == null)?"":returnValue;
-    }//End
+    }//End getString
+
+    public String[] getString(){
+        return data.toArray(String[]::new);
+    }//End getString
 
     int getSize(){
         return data.size();

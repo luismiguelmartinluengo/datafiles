@@ -105,16 +105,21 @@ public class DataframeTest {
         assertTrue(otherDataframe.getString(2, 2).equals(""));//No hay serie con index 2 porque en el constructor no se pasaron datos para ese nombre de serie
     }//End test
 
-/*
     @Test
-    public void testAdjustSeries() {
-        String[] newRecord = {"value5.1", "value5.2", "extraValue"};
-        dataframe.addRecord(newRecord); // This won't add extraValue
-        dataframe.adjustSeries();
-        assertEquals(3, dataframe.getRecordCount());
-        assertNull(dataframe.series.get(2)); // extraValue should not be added as we only have 2 series
-    }
+    public void testGetHeads(){
+        String[] expectedResult = {"Serie1", "Serie2"};
+        String[] result = dataframe.getHeads();
+        assertTrue(Arrays.equals(expectedResult, result));
+    }//End test
 
-     */
+    @Test
+    public void testGetStringAllValues(){
+        String[][] expectedResult = {{"value1.1", "value1.2"}, {"value2.1", "value2.2"}};
+        String[][] result = dataframe.getString();
+        assertTrue(Arrays.equals(expectedResult[0], result[0]));
+        assertTrue(Arrays.equals(expectedResult[1], result[1]));
+    }//End test
+
+
 
 }//End DataframeTest

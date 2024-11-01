@@ -1,6 +1,10 @@
 package com.lmml.datafiles.DataFrame;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Dataframe {
 
@@ -34,7 +38,14 @@ public class Dataframe {
         }else{
             return "";
         }//End if
+    }//End getString
 
+    String[] getHeads(){
+        return series.stream().map(Serie::getName).toArray(String[]::new);
+    }//End getHeads
+    
+    String[][] getString(){
+        return series.stream().map(Serie::getString).toArray(String[][]::new);
     }//End getString
 
     public void writeConsole(){

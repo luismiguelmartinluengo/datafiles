@@ -1,6 +1,9 @@
 package com.lmml.datafiles.DataFrame;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Arrays;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -86,5 +89,12 @@ public class SerieTest {
         assertEquals("val3     ", serie.getConsoleOutput(2));
         assertEquals("         ", serie.getConsoleOutput(3));
     }//End Test
+
+    @Test
+    public void testGetStringAllValues(){
+        String[] expectedResult = {"value1", "valu2", "val3"};
+        String[] result = serie.getString();
+        assertTrue(Arrays.equals(expectedResult, result));
+    }//End test
 
 }//End SerieTest
