@@ -1,2 +1,2 @@
 # datafiles
-Uso de ficheros de texto plano como base de datos
+Explorador básico de un fichero de texto plano para recuperar secciones (filas y/o columnas) del mismo.
