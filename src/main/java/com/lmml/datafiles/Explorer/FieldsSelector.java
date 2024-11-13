@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
+
+
 
 public class FieldsSelector {
     /*Este objeto asume que el array que representa la linea de la que tiene que extraer
