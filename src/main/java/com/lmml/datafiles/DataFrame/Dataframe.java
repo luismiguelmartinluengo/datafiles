@@ -1,6 +1,7 @@
 package com.lmml.datafiles.DataFrame;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Dataframe {
 
@@ -14,7 +15,7 @@ public class Dataframe {
         }//End if
     }//End getRecordCount
     
-    void addRecord(String[] _values){
+    public void addRecord(String[] _values){
         /*Añade un elemento del registro pasado por parámetro a cada una de las series del Dataframe
          * Si se pasan más valores en el registro que series existentes, se descartan los datos que sobren por la derecha
          * Si no se pasan valores para todas las series, se rellenan las últims con valor nulo
@@ -76,5 +77,11 @@ public class Dataframe {
         }//End for
         this.adjustSeries();
     }//End Constructor
+
+    public Dataframe(String[] _names){
+        for (String name: _names){
+            series.add(new Serie(name, new String[0]));
+        }//End for
+    }//End constructor
 
 }//End Dataframe

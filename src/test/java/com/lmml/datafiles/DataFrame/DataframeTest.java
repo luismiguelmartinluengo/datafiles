@@ -14,10 +14,12 @@ public class DataframeTest {
     private Dataframe dataframe;
     private String[] names = {"Serie1", "Serie2"};
     private String[][] values = {{"value1.1", "value1.2"}, {"value2.1", "value2.2"}};
+    private Dataframe emptyDataframe;
 
     @BeforeEach
     public void setUp() {
         dataframe = new Dataframe(names, values);
+        emptyDataframe = new Dataframe(names);
     }//End setUP
 
     @Test
@@ -28,9 +30,23 @@ public class DataframeTest {
     }//End test
 
     @Test
+    public void testGetRecordCountOnEmptyDataframe() {
+        int expectedRecordCount = 0;
+        int resultRecordCount = emptyDataframe.getRecordCount();
+        assertEquals(expectedRecordCount, resultRecordCount);
+    }//End test
+
+    @Test
     public void testGetStringReturnValue() {
         String expectedResult = "value2.2";
         String result = dataframe.getString(1, 1);
+        assertEquals(expectedResult, result);
+    }//End test
+
+    @Test
+    public void testGetStringReturnValueOnEmptyDataframe() {
+        String expectedResult = "";
+        String result = emptyDataframe.getString(1, 1);
         assertEquals(expectedResult, result);
     }//End test
     
@@ -55,6 +71,14 @@ public class DataframeTest {
         String[] result = {dataframe.getString(0, 2), dataframe.getString(1, 2)};
         assertTrue(Arrays.equals(newRecord, result));
     }//End test
+
+    @Test
+    public void testAddRecordOnEmptyDataframe() {
+        String[] newRecord = {"value3.1","value3.2"};
+        emptyDataframe.addRecord(newRecord);
+        String[] result = {emptyDataframe.getString(0, 0), emptyDataframe.getString(1, 0)};
+        assertTrue(Arrays.equals(newRecord, result));
+    }//End test
     
     @Test
     public void testAddRecordWithMissingValues() {
@@ -62,6 +86,15 @@ public class DataframeTest {
         dataframe.addRecord(newRecord);
         String[] expectedResult = {"value3.1",""};
         String[] result = {dataframe.getString(0,2), dataframe.getString(1, 2)};
+        assertTrue(Arrays.equals(expectedResult, result));
+    }//End Test
+
+    @Test
+    public void testAddRecordWithMissingValuesOnEmptyDataframe() {
+        String[] newRecord = {"value3.1"};
+        emptyDataframe.addRecord(newRecord);
+        String[] expectedResult = {"value3.1",""};
+        String[] result = {emptyDataframe.getString(0,0), emptyDataframe.getString(1, 0)};
         assertTrue(Arrays.equals(expectedResult, result));
     }//End Test
     
@@ -75,9 +108,30 @@ public class DataframeTest {
         System.setOut(originalOut);
         String consoleOut = baos.toString();
         String[] consoleOuts = consoleOut.split(System.lineSeparator());
-        String expectedResultMask = "value1.2.*value2.2.*";
-        String result = consoleOuts[consoleOuts.length - 1];
-        assertTrue(result.matches(expectedResultMask));
+        String expectedResultMaskFirstLine = "Serie1.*Serie2.*";
+        String expectedResultMaskLastLine = "value1.2.*value2.2.*";
+        String resultFirstLine = consoleOuts[0];
+        String resultLasttLine = consoleOuts[consoleOuts.length - 1];
+        assertTrue(resultFirstLine.matches(expectedResultMaskFirstLine));
+        assertTrue(resultLasttLine.matches(expectedResultMaskLastLine));
+    }//End test
+
+    @Test
+    public void testWriteConsoleOnEmptyDataframe() {
+        PrintStream originalOut = System.out;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream newOut = new PrintStream(baos);
+        System.setOut(newOut);
+        emptyDataframe.writeConsole();
+        System.setOut(originalOut);
+        String consoleOut = baos.toString();
+        String[] consoleOuts = consoleOut.split(System.lineSeparator());
+        String expectedResultMaskFirstLine = "Serie1.*Serie2.*";
+        String expectedResultMaskLastLine = "Serie1.*Serie2.*";
+        String resultFirstLine = consoleOuts[0];
+        String resultLasttLine = consoleOuts[consoleOuts.length - 1];
+        assertTrue(resultFirstLine.matches(expectedResultMaskFirstLine));
+        assertTrue(resultLasttLine.matches(expectedResultMaskLastLine));
     }//End test
 
     @Test
