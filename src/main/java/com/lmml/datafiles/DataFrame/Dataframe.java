@@ -51,10 +51,11 @@ public class Dataframe {
             output.append(s.getConsoleName()).append("\t");
         }//End for
         for(int index = 0; index < this.getRecordCount(); index++){
-            output.append("\n");
+            output.append(System.lineSeparator());
             for(Serie s: series){
                 output.append(s.getConsoleOutput(index)).append("\t");
             }//End for
+            output.deleteCharAt(output.length()-1);//para quitar el último tabulador del registro
         }//End for
         System.out.println(output.toString());
     }//End writeConsole
