@@ -23,24 +23,36 @@ public class FieldsSelectorTest {
         String[] expectedResult = testValues;
         String[] result = fieldsSelector.getSelection(testValues);
         assertTrue(Arrays.equals(expectedResult, result));
+        
+        String[] expectedResultHeads = descriptorHeads;
+        String[] resultHeads = fieldsSelector.getdHeads();
+        assertTrue(Arrays.equals(expectedResultHeads, resultHeads));
     }//End test
 
     @Test
     public void testConstructorPartialSelection(){
         String[] testSelection ={"Col1","Col3","Col5"}; 
         FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor, testSelection);
-        String[] expectedResult = {"1","3","5"};;
+        String[] expectedResult = {"1","3","5"};
         String[] result = fieldsSelector.getSelection(testValues);
         assertTrue(Arrays.equals(expectedResult, result));
+        
+        String[] expectedResultHeads = {"Col1","Col3","Col5"};
+        String[] resultHeads = fieldsSelector.getdHeads();
+        assertTrue(Arrays.equals(expectedResultHeads, resultHeads));
     }//End test
 
     @Test
     public void testConstructorPartialSelectionWithRepeatedHeads(){
         String[] testSelection ={"Col1","Col1","Col3","Col3","Col3"}; 
         FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor, testSelection);
-        String[] expectedResult = {"1","3"};;
+        String[] expectedResult = {"1","3"};
         String[] result = fieldsSelector.getSelection(testValues);
         assertTrue(Arrays.equals(expectedResult, result));
+        
+        String[] expectedResultHeads = {"Col1","Col3"};
+        String[] resultHeads = fieldsSelector.getdHeads();
+        assertTrue(Arrays.equals(expectedResultHeads, resultHeads));
     }//End test
 
     @Test
@@ -50,6 +62,10 @@ public class FieldsSelectorTest {
         String[] expectedResult = {"1","2","3","4","5"};
         String[] result = fieldsSelector.getSelection(testValues);
         assertTrue(Arrays.equals(expectedResult, result));
+
+        String[] expectedResultHeads = {"Col1","Col2","Col3","Col4","Col5"};
+        String[] resultHeads = fieldsSelector.getdHeads();
+        assertTrue(Arrays.equals(expectedResultHeads, resultHeads));
     }//End test
 
     @Test
@@ -59,6 +75,10 @@ public class FieldsSelectorTest {
         String[] expectedResult = {"1","2","4","5"};
         String[] result = fieldsSelector.getSelection(testValues);
         assertTrue(Arrays.equals(expectedResult, result));
+
+        String[] expectedResultHeads = {"Col1","Col2","Col4","Col5"};
+        String[] resultHeads = fieldsSelector.getdHeads();
+        assertTrue(Arrays.equals(expectedResultHeads, resultHeads));
     }//End test
 
     @Test
@@ -68,6 +88,10 @@ public class FieldsSelectorTest {
         String[] expectedResult = {"1","2","3","4","5"};
         String[] result = fieldsSelector.getSelection(testValues);
         assertTrue(Arrays.equals(expectedResult, result));
+
+        String[] expectedResultHeads = {"Col1","Col2","Col3","Col4","Col5"};
+        String[] resultHeads = fieldsSelector.getdHeads();
+        assertTrue(Arrays.equals(expectedResultHeads, resultHeads));
     }//End test
 
     @Test
@@ -77,6 +101,10 @@ public class FieldsSelectorTest {
         String[] expectedResult = {"1","2","3","4"};
         String[] result = fieldsSelector.getSelection(testValues);
         assertTrue(Arrays.equals(expectedResult, result));
+
+        String[] expectedResultHeads = {"Col1","Col2","Col3","Col4"};
+        String[] resultHeads = fieldsSelector.getdHeads();
+        assertTrue(Arrays.equals(expectedResultHeads, resultHeads));
     }//End test
 
 }//End FieldsSelectorTest

@@ -38,6 +38,15 @@ public class SerieTest {
     }//End test
 
     @Test
+    public void testGetSizeOnEmptySerie(){
+        Serie emptySerie = new Serie("Serie vacía",new String[0]);
+        int expectedResult = 0;
+        int result = emptySerie.getSize();
+        assertEquals(expectedResult, result);
+    }//End Test
+
+
+    @Test
     public void testResizeOnEnlargement() {
         serie.resize(2);
         assertEquals(2, serie.getSize());
@@ -54,7 +63,7 @@ public class SerieTest {
 
     @Test
     public void testGetConsoleNameReturnNameWith() {
-        assertEquals("TestSerie", serie.getConsoleName().trim());
+        assertEquals("TestSerie", serie.getConsoleName());
     }//End test
 
     @Test
