@@ -1,13 +1,12 @@
 package com.lmml.datafiles.DataFrame;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Dataframe {
 
     private ArrayList<Serie> series = new ArrayList<Serie>();
 
-    int getRecordCount(){
+    public int getRecordCount(){
         if (series.size() > 0){
             return series.get(0).getSize();
         }else{
@@ -29,7 +28,7 @@ public class Dataframe {
         }//End for
     }//End addRecord
 
-    String getString(int _indexSerie, int _indexRecord){
+    public String getString(int _indexSerie, int _indexRecord){
         if (series.size() > _indexSerie && getRecordCount() > _indexRecord){
             return series.get(_indexSerie).getString(_indexRecord);
         }else{
@@ -37,11 +36,11 @@ public class Dataframe {
         }//End if
     }//End getString
 
-    String[] getHeads(){
+    public String[] getHeads(){
         return series.stream().map(Serie::getName).toArray(String[]::new);
     }//End getHeads
     
-    String[][] getString(){
+    public String[][] getString(){
         return series.stream().map(Serie::getString).toArray(String[][]::new);
     }//End getString
 

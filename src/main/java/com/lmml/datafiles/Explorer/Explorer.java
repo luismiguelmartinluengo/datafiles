@@ -3,13 +3,13 @@ package com.lmml.datafiles.Explorer;
 import java.io.BufferedReader;
 
 import com.lmml.datafiles.DataFrame.Dataframe;
-import com.lmml.datafiles.Filter.FilterGroup;
+import com.lmml.datafiles.Filter.IFilter;
 
 public class Explorer {
 
     private FieldsSelector fieldsSelector;
     private FileDescriptor fileDescriptor;
-    private FilterGroup filters;
+    private IFilter filter;
     
     public Dataframe get(){
         Dataframe dataframe = new Dataframe(fieldsSelector.getdHeads());
@@ -22,7 +22,7 @@ public class Explorer {
             while (line != null){
                 lineArray = fieldsExtractor.get(line);
                 if (lineArray.length == expectedLineFieldsCount){
-                    if (filters.getEvaluation(lineArray)){
+                    if (filter.getEvaluation(lineArray)){
                         dataframe.addRecord(fieldsSelector.getSelection(lineArray));
                     }//End if
                 }//End if
@@ -35,10 +35,10 @@ public class Explorer {
         }//End try
     }//End get
 
-    Explorer(FieldsSelector _fieldsSelector, FileDescriptor _fileDescriptor, FilterGroup _filsters){
+    Explorer(FieldsSelector _fieldsSelector, FileDescriptor _fileDescriptor, IFilter _filter){
         fieldsSelector = _fieldsSelector;
         fileDescriptor = _fileDescriptor;
-        filters = _filsters;
+        filter = _filter;
     }//End Constructor
 
 }//End Explorer

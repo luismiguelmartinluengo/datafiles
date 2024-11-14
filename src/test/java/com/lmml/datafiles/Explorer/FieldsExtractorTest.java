@@ -8,12 +8,6 @@ import org.junit.jupiter.api.Test;
 
 public class FieldsExtractorTest {
 
-    /*Refactorizar FildsExtractor para quitar el if que evalue si tiene que 
-    ejecutear con o sin delimitador. Usar clase privada interna para 
-    extracción con delimitador y sin delimitador construyéndoa conforme corresponda
-    */
-
-
     @Test
     public void testGetSeparatorCommaWithoutDelimiter() {
         String testString = "Hola,que,tal";
