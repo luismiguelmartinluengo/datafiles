@@ -178,4 +178,53 @@ public class FileDescriptorTest {
         assertTrue(jsonElement.isJsonObject() || jsonElement.isJsonArray());
     }//End test
 
+    @Test
+    public void testFileExistReturnTrue(){
+        boolean expectedResult = true;
+        boolean result = fileDescriptor.fileExist();
+        assertEquals(expectedResult, result);
+    }//End test
+
+    @Test
+    public void testFileExistReturnFalse(){
+        boolean expectedResult = false;
+        otherFileDescriptor.setPath("./NoExiste/NoExiste.txt");
+        boolean result = otherFileDescriptor.fileExist();
+        assertEquals(expectedResult, result);
+    }//End test
+
+    @Test
+    public void testGetIndices(){
+        String[] fielsToSearch = {"Campo3","Campo3","Campo2","Campo99","Campo5"};
+        int[] expectedResult = {2,2,1,4};
+        int[] result = fileDescriptor.getHeadsIndex(fielsToSearch);
+        assertTrue(Arrays.equals(expectedResult, result));
+    }//End test
+
+    @Test
+    public void testGetIndicesOnInvalidHeads(){
+        String[] fielsToSearch = {"Campo33","Campo33","Campo32","Campo99","Campo35"};
+        int[] expectedResult = {};
+        int[] result = fileDescriptor.getHeadsIndex(fielsToSearch);
+        assertTrue(Arrays.equals(expectedResult, result));
+    }//End test
+
+    @Test
+    public void testGetHeads(){
+        int[] fielsToSearch = {2,2,1,8,4};
+        String[] expectedResult = {"Campo3","Campo3","Campo2","Campo5"};
+        String[] result = fileDescriptor.getHeads(fielsToSearch);
+        assertTrue(Arrays.equals(expectedResult, result));
+    }//End test
+
+    @Test
+    public void testGetIndicesOnInvalidIndices(){
+        int[] fielsToSearch = {21,21,11,81,41};
+        String[] expectedResult = {};
+        String[] result = fileDescriptor.getHeads(fielsToSearch);
+        assertTrue(Arrays.equals(expectedResult, result));
+    }//End test
+
+    
+
 }//End FileDescriptorTest

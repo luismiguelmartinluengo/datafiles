@@ -57,10 +57,12 @@ public class FilterGroup implements IFilter{
 
     }//End FilterGroupEvaluatorOr
 
+    public static final int AND_FILTER_GROUP = 0;
+    public static final int OR_FILTER_GROUP = 1;
     FilterGroupEvaluator evaluator;
 
-    private void createEvaluator(boolean _isAndFilterGroup){
-        if(_isAndFilterGroup){
+    private void createEvaluator(int _filterGroupType){
+        if(_filterGroupType == FilterGroup.AND_FILTER_GROUP){
             evaluator = new FilterGroupEvaluatorAnd();
         }else {
             evaluator = new FilterGroupEvaluatorOr();
@@ -75,13 +77,13 @@ public class FilterGroup implements IFilter{
         evaluator.addAll(_filters);
     }//End addAll
 
-    public FilterGroup (IFilter _filtro, boolean _isAndFilterGroup){
-        this.createEvaluator(_isAndFilterGroup);
+    public FilterGroup (IFilter _filtro, int _filterGroupType){
+        this.createEvaluator(_filterGroupType);
         evaluator.add(_filtro);
     }//End Constructor
 
-    public FilterGroup(IFilter[] _filters, boolean _isAndFilterGroup){
-        this.createEvaluator(_isAndFilterGroup);
+    public FilterGroup(IFilter[] _filters, int _filterGroupType){
+        this.createEvaluator(_filterGroupType);
         evaluator.addAll(_filters);
     }//End Constructor
 

@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.google.gson.Gson;
@@ -47,6 +48,26 @@ public class FileDescriptor {
 	void setHeads(String[] _heads) {heads = _heads;}//End setheads
 	
 	String[] getHeads(){return heads;}//End getheads
+
+	String[] getHeads(int[] _indices){
+		ArrayList<String> resultList = new ArrayList<String>();
+		for(int index : _indices){
+			if (index < heads.length){
+				resultList.add(heads[index]);
+			}//End if
+		}//End for
+		return resultList.stream().toArray(String[]::new);
+	}//End getHeads
+
+	int[] getHeadsIndex(String[] _heads){
+		ArrayList<String> headsList = new ArrayList<>(Arrays.asList(heads));
+		ArrayList<Integer> indexList = new ArrayList<Integer>();
+		for(String head:_heads){
+			Integer index = headsList.indexOf(head);
+			if (index >= 0 ) indexList.add(index.intValue());
+		}//End for
+		return indexList.stream().mapToInt(Integer::intValue).toArray();
+	}//End getHeadsIndex
 	
 	void setSkipLines(Integer _skipLines) {skipLines = _skipLines;}//End setSkipLines
 	
@@ -56,6 +77,11 @@ public class FileDescriptor {
 	
 	Integer getNumLines() {return numLines;}//End getNumLines
 	
+	boolean fileExist(){
+		File file = new File(this.path);
+		return file.exists();
+	}//End fileExist
+
 	String asJson() {
 		Gson gson = new Gson();
 		return gson.toJson(this);

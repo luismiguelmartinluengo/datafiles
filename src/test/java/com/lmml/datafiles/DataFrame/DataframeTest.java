@@ -15,11 +15,13 @@ public class DataframeTest {
     private String[] names = {"Serie1", "Serie2"};
     private String[][] values = {{"value1.1", "value1.2"}, {"value2.1", "value2.2"}};
     private Dataframe emptyDataframe;
+    private Dataframe seriesEmptyDataframe;
 
     @BeforeEach
     public void setUp() {
         dataframe = new Dataframe(names, values);
         emptyDataframe = new Dataframe(names);
+        seriesEmptyDataframe = new Dataframe(new String[0]);
     }//End setUP
 
     @Test
@@ -34,6 +36,20 @@ public class DataframeTest {
         int expectedRecordCount = 0;
         int resultRecordCount = emptyDataframe.getRecordCount();
         assertEquals(expectedRecordCount, resultRecordCount);
+    }//End test
+
+    @Test
+    public void testGetSeriesCount(){
+        int expectedSeriesCount = 2;
+        int resultSeriesCount = dataframe.getSeriesCount();
+        assertEquals(expectedSeriesCount, resultSeriesCount);
+    }//End test
+
+    @Test
+    public void testGetSeriesCountOnSeriesEmptyDataframe(){
+        int expectedSeriesCount = 0;
+        int resultSeriesCount = seriesEmptyDataframe.getSeriesCount();
+        assertEquals(expectedSeriesCount, resultSeriesCount);
     }//End test
 
     @Test
@@ -166,6 +182,13 @@ public class DataframeTest {
         assertTrue(Arrays.equals(expectedResult, result));
     }//End test
 
+    @Test
+    public void testGetHeadsOnSeriesEmptyDataFrame(){
+        String[] expectedResult = new String[0];
+        String[] result = seriesEmptyDataframe.getHeads();
+        assertTrue(Arrays.equals(expectedResult, result));
+    }//End test
+    
     @Test
     public void testGetStringAllValues(){
         String[][] expectedResult = {{"value1.1", "value1.2"}, {"value2.1", "value2.2"}};

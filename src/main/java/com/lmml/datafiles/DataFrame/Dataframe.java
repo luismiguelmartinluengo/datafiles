@@ -14,6 +14,10 @@ public class Dataframe {
         }//End if
     }//End getRecordCount
     
+    public int getSeriesCount(){
+        return series.size();
+    }//End getSeriesCount
+
     public void addRecord(String[] _values){
         /*Añade un elemento del registro pasado por parámetro a cada una de las series del Dataframe
          * Si se pasan más valores en el registro que series existentes, se descartan los datos que sobren por la derecha

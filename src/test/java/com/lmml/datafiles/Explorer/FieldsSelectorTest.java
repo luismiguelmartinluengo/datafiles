@@ -1,5 +1,6 @@
 package com.lmml.datafiles.Explorer;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -12,99 +13,73 @@ public class FieldsSelectorTest {
      * de que la lista de valores sea superior o inferior a la esperada.
     */
 
-    String[] descriptorHeads = {"Col1","Col2","Col3","Col4","Col5"};
-    private FileDescriptor fileDescriptor = new FileDescriptor("", ',', '\"', descriptorHeads, 1);
-    String[] testValues = {"1","2","3","4","5"};
+    
+    String[] testValues = {"0","1","2","3","4"};
 
     @Test
-    public void testConstructorFullLine(){
-        String[] testSelection = descriptorHeads ;
-        FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor, testSelection);
+    public void testGetMaxIndexOnNoSelectedIndices(){
+        int[] selectedIndices = new int[0];
+        FieldsSelector fieldsSelector = new FieldsSelector(selectedIndices);
+        int expectedResult = -1;
+        int result = fieldsSelector.getMaxIndex();
+        assertEquals(expectedResult, result);
+    }//End test
+
+    @Test
+    public void testGetMaxIndexResult5(){
+        int[] selectedIndices = {0,5,1,4};
+        FieldsSelector fieldsSelector = new FieldsSelector(selectedIndices);
+        int expectedResult = 5;
+        int result = fieldsSelector.getMaxIndex();
+        assertEquals(expectedResult, result);
+    }//End test
+
+    @Test
+    public void testGetIndices(){
+        int[] selectedIndices = {0,5,1,4};
+        FieldsSelector fieldsSelector = new FieldsSelector(selectedIndices);
+        int[] expectedResult = selectedIndices;
+        int[] result = fieldsSelector.getIndices();
+        assertEquals(expectedResult, result);
+    }//End test
+
+    @Test
+    public void testGetFullFields(){
+        int[] selectedIndices = {0,1,2,3,4};
+        FieldsSelector fieldsSelector = new FieldsSelector(selectedIndices);
         String[] expectedResult = testValues;
         String[] result = fieldsSelector.getSelection(testValues);
         assertTrue(Arrays.equals(expectedResult, result));
-        
-        String[] expectedResultHeads = descriptorHeads;
-        String[] resultHeads = fieldsSelector.getdHeads();
-        assertTrue(Arrays.equals(expectedResultHeads, resultHeads));
     }//End test
 
     @Test
-    public void testConstructorPartialSelection(){
-        String[] testSelection ={"Col1","Col3","Col5"}; 
-        FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor, testSelection);
-        String[] expectedResult = {"1","3","5"};
+    public void testGetSelection(){
+        int[] selectedIndices = {0,2,4};
+        FieldsSelector fieldsSelector = new FieldsSelector(selectedIndices);
+        String[] expectedResult = {"0","2","4"};
         String[] result = fieldsSelector.getSelection(testValues);
         assertTrue(Arrays.equals(expectedResult, result));
-        
-        String[] expectedResultHeads = {"Col1","Col3","Col5"};
-        String[] resultHeads = fieldsSelector.getdHeads();
-        assertTrue(Arrays.equals(expectedResultHeads, resultHeads));
     }//End test
 
     @Test
-    public void testConstructorPartialSelectionWithRepeatedHeads(){
-        String[] testSelection ={"Col1","Col1","Col3","Col3","Col3"}; 
-        FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor, testSelection);
-        String[] expectedResult = {"1","3"};
+    public void testGetAssortedSelection(){
+        int[] selectedIndices = {4,2,0};
+        FieldsSelector fieldsSelector = new FieldsSelector(selectedIndices);
+        String[] expectedResult = {"4","2","0"};
         String[] result = fieldsSelector.getSelection(testValues);
         assertTrue(Arrays.equals(expectedResult, result));
-        
-        String[] expectedResultHeads = {"Col1","Col3"};
-        String[] resultHeads = fieldsSelector.getdHeads();
-        assertTrue(Arrays.equals(expectedResultHeads, resultHeads));
     }//End test
 
     @Test
-    public void testConstructorExceededSelection(){
-        String[] testSelection ={"Col1","Col2","Col6","Col3","Col4","Col5","Col7"}; 
-        FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor, testSelection);
-        String[] expectedResult = {"1","2","3","4","5"};
+    public void testGetAssortedAndDucplicateSelection(){
+        int[] selectedIndices = {4,2,0,0,4,2};
+        FieldsSelector fieldsSelector = new FieldsSelector(selectedIndices);
+        String[] expectedResult = {"4","2","0","0","4","2"};
         String[] result = fieldsSelector.getSelection(testValues);
         assertTrue(Arrays.equals(expectedResult, result));
-
-        String[] expectedResultHeads = {"Col1","Col2","Col3","Col4","Col5"};
-        String[] resultHeads = fieldsSelector.getdHeads();
-        assertTrue(Arrays.equals(expectedResultHeads, resultHeads));
     }//End test
 
-    @Test
-    public void testConstructorExceededSelectionWithRepeatedHeads(){
-        String[] testSelection ={"Col1","Col2","Col7","Col4","Col4","Col5","Col7"}; 
-        FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor, testSelection);
-        String[] expectedResult = {"1","2","4","5"};
-        String[] result = fieldsSelector.getSelection(testValues);
-        assertTrue(Arrays.equals(expectedResult, result));
 
-        String[] expectedResultHeads = {"Col1","Col2","Col4","Col5"};
-        String[] resultHeads = fieldsSelector.getdHeads();
-        assertTrue(Arrays.equals(expectedResultHeads, resultHeads));
-    }//End test
 
-    @Test
-    public void testConstructorAssortedSelection(){
-        String[] testSelection ={"Col3","Col1","Col5","Col2","Col4"}; 
-        FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor, testSelection);
-        String[] expectedResult = {"1","2","3","4","5"};
-        String[] result = fieldsSelector.getSelection(testValues);
-        assertTrue(Arrays.equals(expectedResult, result));
-
-        String[] expectedResultHeads = {"Col1","Col2","Col3","Col4","Col5"};
-        String[] resultHeads = fieldsSelector.getdHeads();
-        assertTrue(Arrays.equals(expectedResultHeads, resultHeads));
-    }//End test
-
-    @Test
-    public void testConstructorPartialAssortedExceededSelectionWithRepeatedHeads(){
-        String[] testSelection ={"Col3","Col1","Col1","Col4","Col6","Col7","Col7","Col2","Col4"}; 
-        FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor, testSelection);
-        String[] expectedResult = {"1","2","3","4"};
-        String[] result = fieldsSelector.getSelection(testValues);
-        assertTrue(Arrays.equals(expectedResult, result));
-
-        String[] expectedResultHeads = {"Col1","Col2","Col3","Col4"};
-        String[] resultHeads = fieldsSelector.getdHeads();
-        assertTrue(Arrays.equals(expectedResultHeads, resultHeads));
-    }//End test
 
 }//End FieldsSelectorTest
