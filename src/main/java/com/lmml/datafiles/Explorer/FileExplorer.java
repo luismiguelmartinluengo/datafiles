@@ -7,7 +7,7 @@ import com.lmml.datafiles.DataFrame.Dataframe;
 import com.lmml.datafiles.Filter.FilterDefault;
 import com.lmml.datafiles.Filter.IFilter;
 
-public class Explorer {
+public class FileExplorer {
 
     private FieldsSelector fieldsSelector;
     private FileDescriptor fileDescriptor;
@@ -65,13 +65,13 @@ public class Explorer {
         return returnDataframe;
     }//End get
 
-    Explorer(FieldsSelector _fieldsSelector, FileDescriptor _fileDescriptor, IFilter _filter){
+    FileExplorer(FieldsSelector _fieldsSelector, FileDescriptor _fileDescriptor, IFilter _filter){
         fieldsSelector = _fieldsSelector;
         fileDescriptor = _fileDescriptor;
         filter = _filter;
     }//End Constructor
 
-    Explorer(FieldsSelector _fieldsSelector, FileDescriptor _fileDescriptor){
+    FileExplorer(FieldsSelector _fieldsSelector, FileDescriptor _fileDescriptor){
         this(_fieldsSelector, _fileDescriptor, new FilterDefault());
     }//End Constructor
 

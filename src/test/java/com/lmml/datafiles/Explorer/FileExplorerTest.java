@@ -11,7 +11,7 @@ import com.lmml.datafiles.Filter.ComparatorType;
 import com.lmml.datafiles.Filter.Filter;
 import com.lmml.datafiles.Filter.FilterGroup;
 
-public class ExplorerTest {
+public class FileExplorerTest {
 
 
     String filePath = "./TestResources/TableFile.txt";
@@ -23,7 +23,7 @@ public class ExplorerTest {
     public void testGetFullFile(){
         FileDescriptor fileDescriptor = new FileDescriptor(filePath, separator, null, heads, skipLines);
         FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor.getHeadsIndex(heads));
-        Explorer explorer = new Explorer(fieldsSelector, fileDescriptor);
+        FileExplorer explorer = new FileExplorer(fieldsSelector, fileDescriptor);
         Dataframe resultDataframe = explorer.get();
         int expectedRecordCount = 5;
         int resultRecordCount = resultDataframe.getRecordCount();
@@ -41,7 +41,7 @@ public class ExplorerTest {
         FileDescriptor fileDescriptor = new FileDescriptor(filePath, separator, null, heads, skipLines);
         String[] fieldsSelection = {"Campo4","Campo2","Campo1","Campo1"};
         FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor.getHeadsIndex(fieldsSelection));
-        Explorer explorer = new Explorer(fieldsSelector, fileDescriptor);
+        FileExplorer explorer = new FileExplorer(fieldsSelector, fileDescriptor);
         Dataframe resultDataframe = explorer.get();
         int expectedRecordCount = 5;
         int resultRecordCount = resultDataframe.getRecordCount();
@@ -59,7 +59,7 @@ public class ExplorerTest {
         FileDescriptor fileDescriptor = new FileDescriptor(filePath, separator, null, heads, skipLines);
         FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor.getHeadsIndex(heads));
         Filter filterSecondLine = new Filter(0,ComparatorType.CONTIENE, "2_");
-        Explorer explorer = new Explorer(fieldsSelector, fileDescriptor, filterSecondLine);
+        FileExplorer explorer = new FileExplorer(fieldsSelector, fileDescriptor, filterSecondLine);
         Dataframe resultDataframe = explorer.get();
         int expectedRecordCount = 1;
         int resultRecordCount = resultDataframe.getRecordCount();
@@ -79,7 +79,7 @@ public class ExplorerTest {
         Filter filterSecondLine = new Filter(0,ComparatorType.CONTIENE, "2_");
         Filter filterLastLine = new Filter(1,ComparatorType.CONTIENE,"valor5");
         FilterGroup filterGrop = new FilterGroup(new Filter[]{filterSecondLine, filterLastLine}, FilterGroup.OR_FILTER_GROUP);
-        Explorer explorer = new Explorer(fieldsSelector, fileDescriptor, filterGrop);
+        FileExplorer explorer = new FileExplorer(fieldsSelector, fileDescriptor, filterGrop);
         Dataframe resultDataframe = explorer.get();
         int expectedRecordCount = 2;
         int resultRecordCount = resultDataframe.getRecordCount();
@@ -97,7 +97,7 @@ public class ExplorerTest {
         FileDescriptor fileDescriptor = new FileDescriptor(filePath, separator, null, heads, skipLines);
         String[] fieldsSelection = {"Campo4","Campo2"};
         FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor.getHeadsIndex(fieldsSelection));
-        Explorer explorer = new Explorer(fieldsSelector, fileDescriptor);
+        FileExplorer explorer = new FileExplorer(fieldsSelector, fileDescriptor);
         Dataframe resultDataframe = explorer.get();
         int expectedRecordCount = 5;
         int resultRecordCount = resultDataframe.getRecordCount();
@@ -115,7 +115,7 @@ public class ExplorerTest {
         FileDescriptor fileDescriptor = new FileDescriptor(filePath, separator, null, heads, skipLines);
         String[] fieldsSelection = {"Campo4","Campo2","Campo2"};
         FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor.getHeadsIndex(fieldsSelection));
-        Explorer explorer = new Explorer(fieldsSelector, fileDescriptor);
+        FileExplorer explorer = new FileExplorer(fieldsSelector, fileDescriptor);
         Dataframe resultDataframe = explorer.get();
         int expectedRecordCount = 5;
         int resultRecordCount = resultDataframe.getRecordCount();
@@ -136,7 +136,7 @@ public class ExplorerTest {
         Filter filterSecondLine = new Filter(0,ComparatorType.CONTIENE, "2_");
         Filter filterLastLine = new Filter(1,ComparatorType.CONTIENE,"valor5");
         FilterGroup filterGrop = new FilterGroup(new Filter[]{filterSecondLine, filterLastLine}, FilterGroup.OR_FILTER_GROUP);
-        Explorer explorer = new Explorer(fieldsSelector, fileDescriptor, filterGrop);
+        FileExplorer explorer = new FileExplorer(fieldsSelector, fileDescriptor, filterGrop);
         Dataframe resultDataframe = explorer.get();
         int expectedRecordCount = 2;
         int resultRecordCount = resultDataframe.getRecordCount();
@@ -153,7 +153,7 @@ public class ExplorerTest {
     public void testGetValidateOnFineDescriptor(){
         FileDescriptor fileDescriptor = new FileDescriptor(filePath, separator, null, heads, skipLines);
         FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor.getHeadsIndex(heads));
-        Explorer explorer = new Explorer(fieldsSelector, fileDescriptor);
+        FileExplorer explorer = new FileExplorer(fieldsSelector, fileDescriptor);
         boolean expectedResult = true;
         boolean result = explorer.getValidation();
         assertEquals(expectedResult, result);
@@ -163,7 +163,7 @@ public class ExplorerTest {
     public void testGetValidateOnWrongDescriptor(){
         FileDescriptor fileDescriptor = new FileDescriptor(filePath, separator, separator, heads, skipLines); //fuerzo error de validación con delimitador y separador iguales
         FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor.getHeadsIndex(heads));
-        Explorer explorer = new Explorer(fieldsSelector, fileDescriptor);
+        FileExplorer explorer = new FileExplorer(fieldsSelector, fileDescriptor);
         boolean expectedResult = false;
         boolean result = explorer.getValidation();
         assertEquals(expectedResult, result);
@@ -174,7 +174,7 @@ public class ExplorerTest {
         String wrongFilePath = "./RutaInexistente/FicheroInexistente.txt";
         FileDescriptor fileDescriptor = new FileDescriptor(wrongFilePath, separator, separator, heads, skipLines); //fuerzo error de validación con delimitador y separador iguales
         FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor.getHeadsIndex(heads));
-        Explorer explorer = new Explorer(fieldsSelector, fileDescriptor);
+        FileExplorer explorer = new FileExplorer(fieldsSelector, fileDescriptor);
         boolean expectedResult = false;
         boolean result = explorer.getValidation();
         assertEquals(expectedResult, result);
@@ -187,7 +187,7 @@ public class ExplorerTest {
         Filter filterOk = new Filter(0,ComparatorType.CONTIENE, "2_");
         Filter filterKO = new Filter(9,ComparatorType.CONTIENE,"valor5");
         FilterGroup filterGrop = new FilterGroup(new Filter[]{filterOk, filterKO}, FilterGroup.OR_FILTER_GROUP);
-        Explorer explorer = new Explorer(fieldsSelector, fileDescriptor, filterGrop);
+        FileExplorer explorer = new FileExplorer(fieldsSelector, fileDescriptor, filterGrop);
         boolean expectedResult = false;
         boolean result = explorer.getValidation();
         assertEquals(expectedResult, result);
@@ -197,7 +197,7 @@ public class ExplorerTest {
     public void testGetValidateOnWrongFieldsSelection(){
         FileDescriptor fileDescriptor = new FileDescriptor(filePath, separator, null, heads, skipLines);
         FieldsSelector fieldsSelector = new FieldsSelector(new int[]{0,2,5,7});
-        Explorer explorer = new Explorer(fieldsSelector, fileDescriptor);
+        FileExplorer explorer = new FileExplorer(fieldsSelector, fileDescriptor);
         boolean expectedResult = false;
         boolean result = explorer.getValidation();
         assertEquals(expectedResult, result);
@@ -208,7 +208,7 @@ public class ExplorerTest {
         String wrongFilePath = "./RutaInexistente/FicheroInexistente.txt";
         FileDescriptor fileDescriptor = new FileDescriptor(wrongFilePath, separator, null, heads, skipLines);
         FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor.getHeadsIndex(heads));
-        Explorer explorer = new Explorer(fieldsSelector, fileDescriptor);
+        FileExplorer explorer = new FileExplorer(fieldsSelector, fileDescriptor);
         Dataframe resultDataframe = explorer.get();
         int expectedRecordCount = 0;
         int resultRecordCount = resultDataframe.getRecordCount();
@@ -225,7 +225,7 @@ public class ExplorerTest {
     public void testGetOnWrongDescriptor(){
         FileDescriptor fileDescriptor = new FileDescriptor(filePath, separator, separator, heads, skipLines);//Descriptor incorrecto con mismo caracter para separador y delimitador
         FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor.getHeadsIndex(heads));
-        Explorer explorer = new Explorer(fieldsSelector, fileDescriptor);
+        FileExplorer explorer = new FileExplorer(fieldsSelector, fileDescriptor);
         Dataframe resultDataframe = explorer.get();
         int expectedRecordCount = 0;
         int resultRecordCount = resultDataframe.getRecordCount();
@@ -243,7 +243,7 @@ public class ExplorerTest {
         FileDescriptor fileDescriptor = new FileDescriptor(filePath, separator, null, heads, skipLines);//Descriptor incorrecto con mismo caracter para separador y delimitador
         FieldsSelector fieldsSelector = new FieldsSelector(fileDescriptor.getHeadsIndex(heads));
         Filter filterKO = new Filter(9,ComparatorType.CONTIENE,"valor5");
-        Explorer explorer = new Explorer(fieldsSelector, fileDescriptor, filterKO);
+        FileExplorer explorer = new FileExplorer(fieldsSelector, fileDescriptor, filterKO);
         Dataframe resultDataframe = explorer.get();
         int expectedRecordCount = 0;
         int resultRecordCount = resultDataframe.getRecordCount();
@@ -260,7 +260,7 @@ public class ExplorerTest {
     public void testGetOnWrongSelector(){
         FileDescriptor fileDescriptor = new FileDescriptor(filePath, separator, null, heads, skipLines);//Descriptor incorrecto con mismo caracter para separador y delimitador
         FieldsSelector fieldsSelector = new FieldsSelector(new int[]{15,23});
-        Explorer explorer = new Explorer(fieldsSelector, fileDescriptor);
+        FileExplorer explorer = new FileExplorer(fieldsSelector, fileDescriptor);
         Dataframe resultDataframe = explorer.get();
         int expectedRecordCount = 0;
         int resultRecordCount = resultDataframe.getRecordCount();

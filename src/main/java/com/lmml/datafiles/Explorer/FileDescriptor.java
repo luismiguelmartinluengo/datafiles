@@ -47,7 +47,9 @@ public class FileDescriptor {
 	
 	void setHeads(String[] _heads) {heads = _heads;}//End setheads
 	
-	String[] getHeads(){return heads;}//End getheads
+	String[] getHeads(){
+		return heads;
+	}//End getheads
 
 	String[] getHeads(int[] _indices){
 		ArrayList<String> resultList = new ArrayList<String>();
