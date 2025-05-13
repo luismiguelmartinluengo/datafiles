@@ -142,19 +142,18 @@ public class FileDescriptorTest {
 
     @Test 
     public void testStaticGetRepositoryName() {
-        String paramFileDescriptorName = "Test nAme-n*a@m$e";
-        String expectedRepoName = "test_name-name"; 
-        String resultRepoName = FileDescriptor.getRepositoryName(paramFileDescriptorName);
-        assertEquals(expectedRepoName, resultRepoName);
+        String expectedRepoNameMask = "sin_nombre.*"; 
+        String resultRepoName = fileDescriptor.getRepositoryName();
+        assertTrue(resultRepoName.matches(expectedRepoNameMask));
     }//End test
 
     @Test 
     public void testInstanceGetRepositoryName() {
         String paramFileDescriptoName = "Test nAme-n*a@m$e";
         fileDescriptor.setName(paramFileDescriptoName);
-        String expectedRepoName = "test_name-name"; 
+        String expectedRepoNameMask = "test_name-name.*"; 
         String resultRepoName = fileDescriptor.getRepositoryName();
-        assertEquals(expectedRepoName, resultRepoName);
+        assertTrue(resultRepoName.matches(expectedRepoNameMask));
     }//End test
 
     @Test 

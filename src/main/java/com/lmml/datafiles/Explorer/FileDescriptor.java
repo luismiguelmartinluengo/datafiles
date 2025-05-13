@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.UUID;
 
 import com.google.gson.Gson;
 import com.lmml.datafiles.Util.Logs;
@@ -14,6 +15,7 @@ import com.lmml.datafiles.Util.Logs;
 public class FileDescriptor {
 
     private String name = "Sin nombre";
+	private String id;
 	private String path;
 	private Character fieldsSeparator;
 	private Character fieldsDelimiter = null;
@@ -21,19 +23,16 @@ public class FileDescriptor {
 	private Integer skipLines = 0;
 	private Integer numLines;
 	
-	void setName(String _name) {name = _name;}//End setname
+	void setName(String _name) {name = _name;}//End setName
 	
-	public String getName() {return name;}//End getname
-	
-	static String getRepositoryName(String _name) {
-		return _name.trim().replaceAll(" ","_").replaceAll("[^a-zA-Z0-9_-]", "").toLowerCase();
-	}//End static getRepositoryName
+	public String getName() {return name;}//End getName
 	
 	public String getRepositoryName() {
-		return getRepositoryName(name);
+		String name_repository = name.trim().replaceAll(" ","_").replaceAll("[^a-zA-Z0-9_-]", "").toLowerCase();
+		return "%s_%s".formatted(name_repository, id);
 	}//End getRepositoryName
 	
-	void setPath(String _path) {path = _path;}//End setpath
+	void setPath(String _path) {path = _path;}//End setPath
 	
 	String getPath() {return path;}//End getpath
 	
@@ -157,6 +156,7 @@ public class FileDescriptor {
 	}//End CompareToAbsolute
 	
 	public FileDescriptor(String _path, Character _fieldsSeparator, Character _fieldsDelimiter) throws IOException{
+		id = UUID.randomUUID().toString();
 		path = _path;
 		fieldsSeparator = _fieldsSeparator;
 		fieldsDelimiter = _fieldsDelimiter;
@@ -168,6 +168,7 @@ public class FileDescriptor {
 	}//End Constructor
 	
 	public FileDescriptor(String _path, Character _fieldsSeparator, Character _fieldsDelimiter, String[] _heads, Integer _skipLines){
+		id = UUID.randomUUID().toString();
 		path = _path;
 		fieldsSeparator = _fieldsSeparator;
 		fieldsDelimiter = _fieldsDelimiter;

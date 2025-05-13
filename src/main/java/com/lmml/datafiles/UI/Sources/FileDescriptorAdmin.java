@@ -3,6 +3,8 @@ package com.lmml.datafiles.UI.Sources;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import com.lmml.datafiles.Explorer.FileDescriptor;
 import com.lmml.datafiles.Util.Logs;
@@ -32,13 +34,25 @@ public class FileDescriptorAdmin {
     
     public void addFileDescriptor(FileDescriptor _fileDescriptor) {
         fileDescriptors.add(_fileDescriptor);
+        saveToRepository(_fileDescriptor);
         notifyListeners();
     }//End addFileDescriptor
 
     public void removeFileDescriptor(FileDescriptor _fileDescriptor) {
-        fileDescriptors.remove(_fileDescriptor);
-        notifyListeners();
+        if (fileDescriptors.contains(_fileDescriptor)) {
+            deleteFromRepository(_fileDescriptor);
+            fileDescriptors.remove(_fileDescriptor);
+            notifyListeners();
+        }//End if
     }//End removeFileDescriptor
+
+    public void removeFileDescriptor(String _name){
+        for (FileDescriptor fd : fileDescriptors) {
+            if (fd.getName().equals(_name)) {
+                removeFileDescriptor(fd);
+            }//End if
+        }//End for
+   }//End removeFileDescriptor
 
     public FileDescriptor getFileDescriptor(String _name) {
         for (FileDescriptor fd : fileDescriptors) {
@@ -51,18 +65,7 @@ public class FileDescriptorAdmin {
 
     public FileDescriptor[] getFileDescriptors() {
         return fileDescriptors.toArray(new FileDescriptor[fileDescriptors.size()]);
-    }//End getFileDescriptors
-
-    public void removeFileDescriptor(String _name){
-        boolean notifyListeners = false;
-        for (FileDescriptor fd : fileDescriptors) {
-            if (fd.getName().equals(_name)) {
-                fileDescriptors.remove(fd);
-                notifyListeners = true;
-            }//End if
-        }//End for
-        if (notifyListeners) {notifyListeners();}
-   }//End removeFileDescriptor
+    }//End getFileDescriptors 
 
    private void load() {
         //Carga de descriptores de fichero desde el repositorio
@@ -85,6 +88,31 @@ public class FileDescriptorAdmin {
 			}//End if
 		}//End for
 	}//End load
+
+    private void saveToRepository(FileDescriptor _fileDescriptor) {
+        //Guarda el descriptor de fichero en el repositorio
+        File repository = new File("./resources/DescriptoresFichero");
+        if (!repository.isDirectory()) {repository.mkdirs();}//End if
+        File file = new File(repository, _fileDescriptor.getRepositoryName() + ".dscfch");
+        try {
+            ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file));
+            output.writeObject(_fileDescriptor);
+            output.close();
+        } catch (Exception e) {
+            Logs.critical(Thread.currentThread().getStackTrace(), new String[]{"Error en la carga de descripores de fichero desde el repositorio",String.format("No se ha podido cargar el descriptor %s", file.getAbsolutePath())}, e);
+            System.out.println(e.getMessage());
+        }//End try
+    }//End saveToRepository
+
+    private void deleteFromRepository(FileDescriptor _fileDescriptor) {
+        //Elimina el descriptor de fichero del repositorio
+        File repository = new File("./resources/DescriptoresFichero");
+        if (!repository.isDirectory()) {repository.mkdirs();}//End if
+        File file = new File(repository, _fileDescriptor.getRepositoryName() + ".dscfch");
+        if (file.exists()) {
+            file.delete();
+        }//End if
+    }//End deleteFromRepository
 
     public FileDescriptorAdmin() {
         load();
