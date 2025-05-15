@@ -12,7 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import java.awt.GridBagLayout;
+import java.awt.Desktop.Action;
 import java.awt.GridBagConstraints;
+import java.awt.Component;
 
 public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
 
@@ -66,7 +68,7 @@ public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
         private AddButton addButton = new AddButton();
         private RemoveButton removeButton = new RemoveButton();
         private EditButton editButton = new EditButton();
-        private TextField textField = new TextField(""); 
+        private TextField textField = new TextField("");
 
         public AddButton getAddButton() {
             return addButton;
@@ -123,14 +125,60 @@ public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
 
     }//End class RowPanel
 
+    private class AdminObjectPanel extends JPanel implements ActionListener {
+        private static final long serialVersionUID = 1L;
+
+        private ObjectAdminUI objectAdminUI = null;
+        private JButton btnAcceptChanges = new JButton("Accept Changes");
+        private JButton btnCancelChanges = new JButton("Cancel Changes");
+        private ArrayList<ActionListener> actionListeners = new ArrayList<ActionListener>();
+
+        public AdminObjectPanel(ObjectAdminUI _objectAdminUI, ActionListener _actionListener) {
+            super();
+            objectAdminUI = _objectAdminUI;
+            actionListeners.add(_actionListener);
+            btnAcceptChanges.addActionListener(this);
+            btnCancelChanges.addActionListener(this);   
+            JPanel buttonsPanel = new JPanel(new BorderLayout());
+            buttonsPanel.add(btnAcceptChanges, BorderLayout.EAST);
+            buttonsPanel.add(btnCancelChanges, BorderLayout.WEST);
+            this.setLayout(new BorderLayout());
+            this.add((Component) objectAdminUI, BorderLayout.CENTER);
+            this.add(buttonsPanel, BorderLayout.SOUTH);
+        }//End constructor
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource().equals(btnAcceptChanges)) {
+                if (objectAdminUI.acceptChanges()) {
+                    for (ActionListener actionListener : actionListeners) {
+                        actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "AcceptChanges"));
+                    }//End for
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se han podido aceptar los cambios", "Error", JOptionPane.ERROR_MESSAGE);
+                }//End nested if
+            } else if (e.getSource().equals(btnCancelChanges)) {
+                objectAdminUI.cancelChanges();
+            } else {
+                for (ActionListener actionListener : actionListeners) {
+                    actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "CancelChanges"));
+                }//End for
+            }//End nested if
+        }//End actionPerformed
+
+    }//End class AdminObjectPanel
+
     private static final long serialVersionUID = 1L;
 
-    JPanel listPanel = new JPanel();
-    ArrayList<G> objects = new ArrayList<G>();
-    ArrayList<JButton> addButtons = new ArrayList<JButton>();
-    ArrayList<JButton> removeButtons = new ArrayList<JButton>();    
-    ArrayList<JButton> editButtons = new ArrayList<JButton>();
-    ArrayList<JPanel> rowPanels = new ArrayList<JPanel>();
+    private JPanel listPanel = new JPanel();
+    private JScrollPane scrollInnerPanel;
+    private ArrayList<G> objects = new ArrayList<G>();
+    private ArrayList<JButton> addButtons = new ArrayList<JButton>();
+    private ArrayList<JButton> removeButtons = new ArrayList<JButton>();    
+    private ArrayList<JButton> editButtons = new ArrayList<JButton>();
+    private ArrayList<JPanel> rowPanels = new ArrayList<JPanel>();
+    private AdminObjectPanel adminObjectPanel = null;
+    private G newObject = null;
 
     private JPanel getNewRowPanel(Object _object){
         RowPanel rowPanel = new RowPanel(_object, this);
@@ -142,28 +190,52 @@ public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
         //hay que poner el código para añadir el panel al innerPanel
     }//End getNewRowPanel
 
+    private void showAdminObjectPanel() {
+        if (adminObjectPanel != null) {
+            this.remove(scrollInnerPanel);
+            this.add(adminObjectPanel, BorderLayout.CENTER);
+            this.revalidate();
+            this.repaint();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se ha definido el panel de administración de objetos", "Error", JOptionPane.ERROR_MESSAGE);
+        }//End nested if
+    }//End showAdminObjectPanel
+
+    private void hideAdminObjectPanel() {
+        if (adminObjectPanel != null) {
+            this.remove(adminObjectPanel);
+            this.add(scrollInnerPanel, BorderLayout.CENTER);
+            this.revalidate();
+            this.repaint();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se ha definido el panel de administración de objetos", "Error", JOptionPane.ERROR_MESSAGE);
+        }//End nested if
+    }//End hideAdminObjectPanel
+
     private void initComponents() {
         listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
-        JPanel innerPanel = new JPanel(new BorderLayout());
-        innerPanel.setBackground(Color.GREEN);
-        innerPanel.add(listPanel, BorderLayout.NORTH);
-        if (objects.size()==0){
-            JPanel rowPanel = getNewRowPanel(null);
-            listPanel.add(rowPanel);
-        } else {
-            for(Object object : objects) {
-                JPanel rowPanel = getNewRowPanel(object);
+            if (objects.size()==0){
+                JPanel rowPanel = getNewRowPanel(null);
                 listPanel.add(rowPanel);
-            }//End for
-        }//End if
-        JScrollPane scrollInnerPanel = new JScrollPane(innerPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+            } else {
+                for(Object object : objects) {
+                    JPanel rowPanel = getNewRowPanel(object);
+                    listPanel.add(rowPanel);
+                }//End for
+            }//End if
+        JPanel innerPanel = new JPanel(new BorderLayout());
+            innerPanel.setBackground(Color.GREEN);
+            innerPanel.add(listPanel, BorderLayout.NORTH);
+        scrollInnerPanel = new JScrollPane(innerPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         this.setLayout(new BorderLayout());
-        this.add(scrollInnerPanel, java.awt.BorderLayout.CENTER);
+           this.add(scrollInnerPanel, java.awt.BorderLayout.CENTER);
+
     }//End initComponents
 
-    public PnlArrayListAdmin(ArrayList<G> _objects) {
+    public PnlArrayListAdmin(ArrayList<G> _objects, ObjectAdminUI _objectAdminUI) {
         super();
         objects = _objects;
+        adminObjectPanel = new AdminObjectPanel(_objectAdminUI, this);
         initComponents();
     }//End constructor
 
@@ -171,7 +243,7 @@ public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "Add":
-                System.out.println("Add button clicked");
+                showAdminObjectPanel();
                 int index = addButtons.indexOf(e.getSource());
                 String texto = objects.get(index).toString();
                 JOptionPane.showMessageDialog(this, "Add button clicked para elemento %s".formatted(texto));
@@ -181,6 +253,14 @@ public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
                 break;
             case "Edit":
                 JOptionPane.showMessageDialog(this, "Edit button clicked");
+                break;
+            case "AcceptChanges":
+                JOptionPane.showMessageDialog(this, "AcceptChanges button clicked");
+                hideAdminObjectPanel();
+                break;
+            case "CancelChanges":
+                JOptionPane.showMessageDialog(this, "CancelChanges button clicked");
+                hideAdminObjectPanel();
                 break;
             default:
                 JOptionPane.showMessageDialog(this, "Unknown action");

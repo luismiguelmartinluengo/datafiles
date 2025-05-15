@@ -4,14 +4,17 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentListener;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.BorderLayout;
 
-public class PnlLabeledTextBox extends JPanel{
+public class PnlLabeledTextBox extends JPanel implements ObjectAdminUI{
 
     private static final long serialVersionUID = 1L;
     
     private JLabel lblTitle = new JLabel();
     private JTextField txtValue = new JTextField();
+    private String administratedObject = null;
 
     public void addDocumentListener(DocumentListener _listener){
         txtValue.getDocument().addDocumentListener(_listener);
@@ -41,6 +44,38 @@ public class PnlLabeledTextBox extends JPanel{
         txtValue.setText(_value);
         initComponents();
     }//End constructor
+
+    @Override
+    public void setObject(Object _object) {
+        if (_object instanceof String) {
+            administratedObject = (String) _object;
+            setValue(administratedObject);
+        } else {
+            throw new IllegalArgumentException("El objeto pasado no es de tipo String.");
+        }//End nested if
+    }//End setObject
+
+    @Override
+    public Boolean acceptChanges() {
+        if (administratedObject == null || administratedObject.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No se encuentra la referencia al objeto administrado", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } else {
+            administratedObject = getValue();
+            return true;
+        }//End nested if
+    }//End acceptChanges
+
+    @Override
+    public Boolean cancelChanges() {
+        if (administratedObject == null || administratedObject.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No se encuentra la referencia al objeto administrado", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } else {
+            this.setValue(administratedObject);
+            return true;
+        }//End nested if
+    }
 
 
 }//End PnlLabeledTextBox
