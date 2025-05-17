@@ -2,7 +2,8 @@ package com.lmml.datafiles.UI.common;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JTextField; 
+import javax.swing.JTextField;
+import javax.swing.border.MatteBorder;
 import javax.swing.JScrollPane;
 
 import java.awt.Color;
@@ -12,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import java.awt.GridBagLayout;
-import java.awt.Desktop.Action;
 import java.awt.GridBagConstraints;
 import java.awt.Component;
 
@@ -25,11 +25,25 @@ public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
             super();
             this.setText(_text);
             this.setEditable(false);
+            this.setOpaque(false);
+            this.setBorder(null);
         }//End constructor
 
     }//End class TextField
 
-    private class AddButton extends JButton {
+    private class InnerButton extends JButton {
+        private static final long serialVersionUID = 1L;
+
+        public InnerButton() {
+            super();
+            this.setBorderPainted(false);
+            this.setFocusPainted(false);
+            this.setContentAreaFilled(false);
+        }//End constructor
+
+    }//End class GenericButton
+
+    private class AddButton extends InnerButton {
         private static final long serialVersionUID = 1L;
 
         public AddButton() {
@@ -40,7 +54,7 @@ public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
 
     }//End class AddButton
 
-    private class RemoveButton extends JButton {
+    private class RemoveButton extends InnerButton {
         private static final long serialVersionUID = 1L;
 
         public RemoveButton() {
@@ -51,7 +65,7 @@ public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
 
     }//End class RemoveButton
 
-    private class EditButton extends JButton {
+    private class EditButton extends InnerButton {
         private static final long serialVersionUID = 1L;
 
         public EditButton() {
@@ -82,12 +96,19 @@ public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
             return editButton;
         }//End getEditButton
 
+        public void showValue(String _newValue){
+            textField.setText(_newValue);
+            this.validate();
+            this.repaint();
+        }//End showValue
+
         private void initComponents() {
             JPanel buttonsPanel = new JPanel();
             buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
             buttonsPanel.add(addButton);
             buttonsPanel.add(removeButton);
             buttonsPanel.add(editButton);
+            buttonsPanel.setOpaque(false);
             this.setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
             //textField
@@ -106,6 +127,8 @@ public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
                 gbc.fill = GridBagConstraints.NONE; // Mantener tamaño original
                 gbc.anchor = GridBagConstraints.LINE_END; // Alineado a la derecha
                 this.add(buttonsPanel, gbc);
+            this.setBorder(new MatteBorder(0, 0, 1, 0, Color.GRAY));
+            this.setOpaque(false);
         }//End initComponents
 
         public RowPanel(Object _object, ActionListener _Listener) {
@@ -133,6 +156,26 @@ public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
         private JButton btnCancelChanges = new JButton("Cancel Changes");
         private ArrayList<ActionListener> actionListeners = new ArrayList<ActionListener>();
 
+        public void setUIForNew(){
+            objectAdminUI.clearUI();
+            btnAcceptChanges.setText("Add");
+            btnCancelChanges.setText("Cancel");
+        }//End setUIForNew
+
+        public void setUIForEdit(Object _administratedObject){
+            objectAdminUI.setObject(_administratedObject);
+            btnAcceptChanges.setText("Accept Changes");
+            btnCancelChanges.setText("Cancel Changes");
+        }//End setUIForEdit
+
+        public Object getNewObject(){
+            return objectAdminUI.getNew();
+        }//End getNewObject
+
+        public Object getModifiedObject(Object _administratedObject){
+            return objectAdminUI.acceptChanges(_administratedObject);
+        }//End getModifiedObject
+
         public AdminObjectPanel(ObjectAdminUI _objectAdminUI, ActionListener _actionListener) {
             super();
             objectAdminUI = _objectAdminUI;
@@ -145,25 +188,20 @@ public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
             this.setLayout(new BorderLayout());
             this.add((Component) objectAdminUI, BorderLayout.CENTER);
             this.add(buttonsPanel, BorderLayout.SOUTH);
+            this.setOpaque(false);
         }//End constructor
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource().equals(btnAcceptChanges)) {
-                if (objectAdminUI.acceptChanges()) {
-                    for (ActionListener actionListener : actionListeners) {
-                        actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "AcceptChanges"));
-                    }//End for
-                } else {
-                    JOptionPane.showMessageDialog(this, "No se han podido aceptar los cambios", "Error", JOptionPane.ERROR_MESSAGE);
-                }//End nested if
-            } else if (e.getSource().equals(btnCancelChanges)) {
-                objectAdminUI.cancelChanges();
-            } else {
+            if (e.getSource().equals(btnAcceptChanges)){
+                for (ActionListener actionListener : actionListeners) {
+                    actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "AcceptChanges"));
+                }//End for
+            }else if (e.getSource().equals(btnCancelChanges)){
                 for (ActionListener actionListener : actionListeners) {
                     actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "CancelChanges"));
                 }//End for
-            }//End nested if
+            }//End if
         }//End actionPerformed
 
     }//End class AdminObjectPanel
@@ -176,18 +214,18 @@ public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
     private ArrayList<JButton> addButtons = new ArrayList<JButton>();
     private ArrayList<JButton> removeButtons = new ArrayList<JButton>();    
     private ArrayList<JButton> editButtons = new ArrayList<JButton>();
-    private ArrayList<JPanel> rowPanels = new ArrayList<JPanel>();
+    private ArrayList<RowPanel> rowPanels = new ArrayList<RowPanel>();
     private AdminObjectPanel adminObjectPanel = null;
-    private G newObject = null;
+    private int indexForNewRow = -1;
+    private int indexForEdit = -1;    
 
-    private JPanel getNewRowPanel(Object _object){
+    private JPanel getNewRowPanel(Object _object, int indexForNewRow){
         RowPanel rowPanel = new RowPanel(_object, this);
-        addButtons.add(rowPanel.getAddButton());
-        removeButtons.add(rowPanel.getRemoveButton());
-        editButtons.add(rowPanel.getEditButton());
-        rowPanels.add(rowPanel);
+        addButtons.add(indexForNewRow, rowPanel.getAddButton());
+        removeButtons.add(indexForNewRow, rowPanel.getRemoveButton());
+        editButtons.add(indexForNewRow, rowPanel.getEditButton());
+        rowPanels.add(indexForNewRow, rowPanel);
         return rowPanel;
-        //hay que poner el código para añadir el panel al innerPanel
     }//End getNewRowPanel
 
     private void showAdminObjectPanel() {
@@ -215,18 +253,19 @@ public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
     private void initComponents() {
         listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
             if (objects.size()==0){
-                JPanel rowPanel = getNewRowPanel(null);
+                JPanel rowPanel = getNewRowPanel(null, 0);
                 listPanel.add(rowPanel);
             } else {
                 for(Object object : objects) {
-                    JPanel rowPanel = getNewRowPanel(object);
+                    JPanel rowPanel = getNewRowPanel(object, rowPanels.size());
                     listPanel.add(rowPanel);
                 }//End for
             }//End if
+            listPanel.setOpaque(false);
         JPanel innerPanel = new JPanel(new BorderLayout());
-            innerPanel.setBackground(Color.GREEN);
+            innerPanel.setBackground(Color.white);
             innerPanel.add(listPanel, BorderLayout.NORTH);
-        scrollInnerPanel = new JScrollPane(innerPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollInnerPanel = new JScrollPane(innerPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         this.setLayout(new BorderLayout());
            this.add(scrollInnerPanel, java.awt.BorderLayout.CENTER);
 
@@ -243,23 +282,67 @@ public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "Add":
+                if (objects.size() == 0){
+                    indexForNewRow = 0;
+                } else {
+                    indexForNewRow = addButtons.indexOf(e.getSource()) + 1;
+                }//End if
+                adminObjectPanel.setUIForNew();
                 showAdminObjectPanel();
-                int index = addButtons.indexOf(e.getSource());
-                String texto = objects.get(index).toString();
-                JOptionPane.showMessageDialog(this, "Add button clicked para elemento %s".formatted(texto));
                 break;
             case "Remove":
-                JOptionPane.showMessageDialog(this, "Remove button clicked");
+                int indexForRemove = removeButtons.indexOf(e.getSource());
+                if(JOptionPane.showConfirmDialog(this, "Se va a eliminar el elemento %s. ¿Estás seguro?".formatted(objects.get(indexForRemove).toString()), "Confirmar eliminación", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION){
+                    listPanel.remove(indexForRemove);
+                    addButtons.remove(indexForRemove);
+                    removeButtons.remove(indexForRemove);
+                    editButtons.remove(indexForRemove);
+                    rowPanels.remove(indexForRemove);
+                    objects.remove(indexForRemove);
+                    if (objects.size() == 0){
+                        JPanel rowPanel = getNewRowPanel(null, 0);
+                        listPanel.add(rowPanel);
+                    }//End if
+                } else {
+                    JOptionPane.showMessageDialog(this, "Borrado cancelado");
+                }//End nested if
                 break;
             case "Edit":
-                JOptionPane.showMessageDialog(this, "Edit button clicked");
+                indexForEdit = editButtons.indexOf(e.getSource());
+                adminObjectPanel.setUIForEdit(objects.get(indexForEdit));
+                showAdminObjectPanel();
                 break;
             case "AcceptChanges":
-                JOptionPane.showMessageDialog(this, "AcceptChanges button clicked");
+                if (indexForNewRow > -1) {
+                    if (indexForNewRow == 0){
+                        listPanel.removeAll();
+                        addButtons.clear();
+                        removeButtons.clear();
+                        editButtons.clear();
+                        rowPanels.clear();
+                    }//End if
+                    @SuppressWarnings("unchecked")
+                    G newObject = (G) adminObjectPanel.getNewObject();
+                    objects.add(indexForNewRow, newObject);
+                    JPanel rowPanel = getNewRowPanel(newObject, indexForNewRow);
+                    listPanel.add(rowPanel, indexForNewRow);
+                    listPanel.revalidate();
+                    listPanel.repaint();    
+                } else {
+                    if (indexForEdit > -1) {
+                        @SuppressWarnings("unchecked")
+                        G modifiedObject = (G) adminObjectPanel.getModifiedObject(objects.get(indexForEdit));
+                        objects.set(indexForEdit, modifiedObject);
+                        rowPanels.get(indexForEdit).showValue(modifiedObject.toString());
+                    }//End if
+                }//End nested if
                 hideAdminObjectPanel();
+                indexForNewRow = -1;
+                indexForEdit = -1;
                 break;
             case "CancelChanges":
-                JOptionPane.showMessageDialog(this, "CancelChanges button clicked");
+                indexForNewRow = -1;
+                indexForEdit = -1;
                 hideAdminObjectPanel();
                 break;
             default:

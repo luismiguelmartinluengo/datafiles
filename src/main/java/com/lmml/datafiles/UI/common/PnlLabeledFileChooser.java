@@ -11,17 +11,17 @@ public class PnlLabeledFileChooser extends JPanel implements ActionListener{
 
     private static final long serialVersionUID = 1L;
     
-    PnlLabeledTextBox ltxPath = new PnlLabeledTextBox("Ruta:", "");
+    PnlLabeledTextField ltfPath = new PnlLabeledTextField("Ruta:", "");
     JButton btnBrowse = new JButton("...");
     JFileChooser fileChooser = new JFileChooser();
 
     public String getPaht(){
-        return ltxPath.getValue();
+        return ltfPath.getText();
     }//End getPath
 
     private void initComponents() {
         this.setLayout(new BorderLayout());
-        this.add(ltxPath, java.awt.BorderLayout.CENTER);
+        this.add(ltfPath, java.awt.BorderLayout.CENTER);
         this.add(btnBrowse, java.awt.BorderLayout.EAST);
     }//End initComponents
 
@@ -35,7 +35,7 @@ public class PnlLabeledFileChooser extends JPanel implements ActionListener{
         if (e.getSource().equals(btnBrowse)) {
             int returnVal = fileChooser.showOpenDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                ltxPath.setValue(fileChooser.getSelectedFile().getAbsolutePath());
+                ltfPath.setText(fileChooser.getSelectedFile().getAbsolutePath());
             }//End if
         }//End if
     }//End actionPerformed

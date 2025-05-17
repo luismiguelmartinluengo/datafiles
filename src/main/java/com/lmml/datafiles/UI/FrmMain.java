@@ -10,7 +10,7 @@ import javax.swing.JTabbedPane;
 import com.lmml.datafiles.UI.Sources.FileDescriptorAdmin;
 import com.lmml.datafiles.UI.Sources.PnlFileDescriptorSelector;
 import com.lmml.datafiles.UI.common.PnlArrayListAdmin;
-import com.lmml.datafiles.UI.common.PnlLabeledTextBox;
+import com.lmml.datafiles.UI.common.PnlLabeledTextField;
 
 public class FrmMain extends JFrame {
 
@@ -20,7 +20,7 @@ public class FrmMain extends JFrame {
 	
 	public FrmMain(){
 		this.setTitle("Exploradores");
-		this.setBounds(200, 200, 1000, 700);
+		this.setBounds(200, 200, 1000, 400);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLayout(new BorderLayout());
 		this.add(tpPrincipal, BorderLayout.CENTER);
@@ -42,7 +42,7 @@ public class FrmMain extends JFrame {
 					testStringArray.add("Elemento 12");
 					
 
-		tpPrincipal.add("Administración Descriptores de fichero", new PnlArrayListAdmin<String>(testStringArray, new PnlLabeledTextBox("Nuevo Valor: ", "")));
+		tpPrincipal.add("Administración Descriptores de fichero", new PnlArrayListAdmin<String>(testStringArray, new PnlLabeledTextField("Nuevo Valor: ", "")));
 		tpPrincipal.add("Explorador de árbol", new PnlFileDescriptorSelector(fileDescriptorAdmin));
 		this.setVisible(true);//Esto siempre al final del constructor
 	}//End constructor
