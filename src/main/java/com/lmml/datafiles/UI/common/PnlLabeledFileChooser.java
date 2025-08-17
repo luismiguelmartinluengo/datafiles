@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class PnlLabeledFileChooser extends JPanel implements ActionListener{
 
@@ -14,12 +15,22 @@ public class PnlLabeledFileChooser extends JPanel implements ActionListener{
     PnlLabeledTextField ltfPath = new PnlLabeledTextField("Ruta:", "");
     JButton btnBrowse = new JButton("...");
     JFileChooser fileChooser = new JFileChooser();
+    ArrayList<ActionListener> listeners = new ArrayList<ActionListener>();
+    
+    public void addActionListener(ActionListener _listener){
+        listeners.add(_listener);
+    }//End addActionListener
 
-    public String getPaht(){
+    public String getPath(){
         return ltfPath.getText();
     }//End getPath
 
+    public void setPath(String _path){
+        ltfPath.setText(_path);
+    }//End setPath
+
     private void initComponents() {
+        btnBrowse.addActionListener(this);
         this.setLayout(new BorderLayout());
         this.add(ltfPath, java.awt.BorderLayout.CENTER);
         this.add(btnBrowse, java.awt.BorderLayout.EAST);
@@ -36,6 +47,10 @@ public class PnlLabeledFileChooser extends JPanel implements ActionListener{
             int returnVal = fileChooser.showOpenDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 ltfPath.setText(fileChooser.getSelectedFile().getAbsolutePath());
+                e.setSource(this);
+                for (ActionListener listener : listeners) {
+                    listener.actionPerformed(e);
+                }//End for
             }//End if
         }//End if
     }//End actionPerformed

@@ -2,12 +2,14 @@ package com.lmml.datafiles.UI;
 
 
 import java.awt.BorderLayout;
+import com.lmml.datafiles.Explorer.FileDescriptor;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
 import com.lmml.datafiles.UI.Sources.FileDescriptorAdmin;
+import com.lmml.datafiles.UI.Sources.PnlFileDescriptorAdmin;
 import com.lmml.datafiles.UI.Sources.PnlFileDescriptorSelector;
 import com.lmml.datafiles.UI.common.PnlArrayListAdmin;
 import com.lmml.datafiles.UI.common.PnlLabeledTextField;
@@ -25,9 +27,12 @@ public class FrmMain extends JFrame {
 		this.setLayout(new BorderLayout());
 		this.add(tpPrincipal, BorderLayout.CENTER);
 
-
-					ArrayList<String> testStringArray = new ArrayList<String>();
+		ArrayList<FileDescriptor> testFileDescriptorArray = new ArrayList<FileDescriptor>();
+		PnlArrayListAdmin<FileDescriptor> alaFileDescriptorArray = new PnlArrayListAdmin<FileDescriptor>(testFileDescriptorArray, new PnlFileDescriptorAdmin());
+		tpPrincipal.add("Test", alaFileDescriptorArray);
 					
+					ArrayList<String> testStringArray = new ArrayList<String>();
+					 
 					testStringArray.add("Elemento 1");
 					testStringArray.add("Elemento 2");
 					testStringArray.add("Elemento 3");
@@ -42,8 +47,13 @@ public class FrmMain extends JFrame {
 					testStringArray.add("Elemento 12");
 					
 
-		tpPrincipal.add("Administración Descriptores de fichero", new PnlArrayListAdmin<String>(testStringArray, new PnlLabeledTextField("Nuevo Valor: ", "")));
+
+		PnlArrayListAdmin<String> testStringArrayAdmin = new PnlArrayListAdmin<String>(testStringArray, new PnlLabeledTextField("Nuevo Valor: ", ""));
+		tpPrincipal.add("Administración Descriptores de fichero", testStringArrayAdmin);
 		tpPrincipal.add("Explorador de árbol", new PnlFileDescriptorSelector(fileDescriptorAdmin));
+		
+
+		
 		this.setVisible(true);//Esto siempre al final del constructor
 	}//End constructor
 	

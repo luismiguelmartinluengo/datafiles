@@ -4,7 +4,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentListener;
 
 
-public class PnlLabeledTextField extends PnlLabeledComponent implements ObjectAdminUI{
+public class PnlLabeledTextField extends PnlLabeledComponent implements ObjectAdminUI<String>{
 
     private static final long serialVersionUID = 1L;
     
@@ -33,35 +33,23 @@ public class PnlLabeledTextField extends PnlLabeledComponent implements ObjectAd
     }//End constructor
 
     @Override
-    public void setObject(Object _administratedObject) {
-        if (_administratedObject instanceof String) {
-            String administratedString = (String) _administratedObject;
-            tflText.setText(administratedString);
-        } else {
-            throw new IllegalArgumentException("El objeto pasado para administración no es de tipo String.");
-        }//End nested if
+    public void setObject(String _administratedObject) {
+        tflText.setText(_administratedObject);
     }//End setObject
 
     @Override
-    public Object getNew(){
+    public String getNew(){
         return new String(tflText.getText());
     }//End getNew
 
     @Override
-    public Object acceptChanges(Object _administratedObject) {
-        if (_administratedObject instanceof String) {
-            String administratedString = (String) _administratedObject;
-            administratedString = tflText.getText();
-            return administratedString;
-        } else {
-            throw new IllegalArgumentException("El objeto pasado para administración no es de tipo String.");
-        }//End nested if
+    public String acceptChanges(String _administratedObject) {
+        return tflText.getText();
     }//End acceptChanges
 
     @Override
     public void clearUI() {
         tflText.setText("");
     }//End clear
-
 
 }//End PnlLabeledTextBox

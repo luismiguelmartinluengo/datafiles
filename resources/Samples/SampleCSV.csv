@@ -1,0 +1,51 @@
+ID;Nombre;Edad;Ciudad;Salario;Departamento;Activo;FechaIngreso;Puesto;Notas
+1;Juan Pérez;34;Madrid;32000;Ventas;Sí;2018-03-15;Ejecutivo;Buen desempeño
+2;Ana López;29;Barcelona;28000;Marketing;No;2019-07-22;Analista;En formación
+3;Carlos Ruiz;41;Valencia;41000;IT;Sí;2015-11-10;Desarrollador;Líder de equipo
+4;Lucía Gómez;25;Sevilla;25000;Recursos Humanos;Sí;2021-01-05;Asistente;Nuevo ingreso
+5;Miguel Torres;38;Bilbao;39000;Finanzas;No;2017-06-30;Contador;Licencia médica
+6;Sofía Díaz;31;Zaragoza;31000;Ventas;Sí;2016-09-18;Ejecutivo;Promoción reciente
+7;David Martín;27;Málaga;27000;Marketing;Sí;2020-04-12;Analista;Buen potencial
+8;Elena Sánchez;36;Murcia;35000;IT;No;2014-12-01;Desarrollador;Proyecto especial
+9;Pablo Romero;33;Palma;33000;Recursos Humanos;Sí;2019-02-20;Asistente;Trabajo remoto
+10;Laura Navarro;30;Alicante;30000;Finanzas;Sí;2018-08-25;Contador;Sin observaciones
+11;Javier Molina;42;Madrid;42000;Ventas;No;2013-05-14;Gerente;Jubilación próxima
+12;Marta Castro;28;Barcelona;29000;Marketing;Sí;2021-03-19;Ejecutivo;En capacitación
+13;Sergio Ramos;35;Valencia;36000;IT;Sí;2017-10-23;Desarrollador;Certificación reciente
+14;Patricia Vega;26;Sevilla;26000;Recursos Humanos;No;2020-12-11;Asistente;Baja temporal
+15;Alberto Gil;39;Bilbao;40000;Finanzas;Sí;2016-07-07;Contador;Auditoría interna
+16;Cristina León;32;Zaragoza;32000;Ventas;Sí;2015-09-29;Ejecutivo;Cliente destacado
+17;Raúl Herrera;29;Málaga;29000;Marketing;No;2019-06-16;Analista;Proyecto cancelado
+18;Isabel Ortiz;37;Murcia;37000;IT;Sí;2014-11-03;Desarrollador;Mentor de equipo
+19;Fernando Sáez;34;Palma;34000;Recursos Humanos;Sí;2018-01-27;Asistente;Sin incidencias
+20;Beatriz Ramos;31;Alicante;31000;Finanzas;No;2017-08-13;Contador;Permiso parental
+21;Luis Morales;43;Madrid;43000;Ventas;Sí;2012-04-21;Gerente;Reconocimiento anual
+22;Rosa Jiménez;27;Barcelona;27000;Marketing;Sí;2020-02-08;Ejecutivo;Nuevo producto
+23;Andrés Peña;36;Valencia;38000;IT;No;2016-10-15;Desarrollador;Cambio de área
+24;Natalia Cruz;25;Sevilla;25000;Recursos Humanos;Sí;2021-05-02;Asistente;Becaria
+25;Víctor Lozano;38;Bilbao;39000;Finanzas;Sí;2015-06-19;Contador;Viaje de negocios
+26;Paula Ramos;33;Zaragoza;33000;Ventas;No;2018-09-05;Ejecutivo;Licencia por estudios
+27;Manuel Soto;30;Málaga;30000;Marketing;Sí;2019-07-28;Analista;Participa en eventos
+28;Sara Medina;35;Murcia;35000;IT;Sí;2013-12-17;Desarrollador;Desempeño sobresaliente
+29;Jorge Vidal;32;Palma;32000;Recursos Humanos;No;2017-03-11;Asistente;Rotación interna
+30;Eva Romero;29;Alicante;29000;Finanzas;Sí;2018-10-22;Contador;Sin novedades
+31;Óscar Ramos;44;Madrid;44000;Ventas;Sí;2011-06-09;Gerente;Premio a la trayectoria
+32;Marina Ruiz;28;Barcelona;28000;Marketing;No;2021-04-14;Ejecutivo;En prácticas
+33;Rubén Torres;37;Valencia;37000;IT;Sí;2015-11-29;Desarrollador;Formador interno
+34;Silvia Gómez;26;Sevilla;26000;Recursos Humanos;Sí;2020-01-18;Asistente;Voluntariado
+35;Francisco Díaz;39;Bilbao;40000;Finanzas;No;2016-08-23;Contador;Revisión pendiente
+36;Lorena Martín;31;Zaragoza;31000;Ventas;Sí;2017-10-02;Ejecutivo;Cliente internacional
+37;Tomás Herrera;30;Málaga;30000;Marketing;Sí;2019-05-25;Analista;Participa en ferias
+38;Carmen Ortiz;36;Murcia;36000;IT;No;2014-10-20;Desarrollador;Proyecto internacional
+39;Adrián Sáez;33;Palma;33000;Recursos Humanos;Sí;2018-02-14;Asistente;Sin incidencias
+40;Patricia Ramos;32;Alicante;32000;Finanzas;Sí;2017-09-29;Contador;Sin observaciones
+41;Enrique Morales;45;Madrid;45000;Ventas;No;2010-03-17;Gerente;Jubilación próxima
+42;Raquel Jiménez;27;Barcelona;27000;Marketing;Sí;2020-03-21;Ejecutivo;Nuevo cliente
+43;Iván Peña;38;Valencia;38000;IT;Sí;2016-11-12;Desarrollador;Cambio de proyecto
+44;Andrea Cruz;25;Sevilla;25000;Recursos Humanos;No;2021-06-07;Asistente;Becaria
+45;Héctor Lozano;39;Bilbao;39000;Finanzas;Sí;2015-07-15;Contador;Viaje de formación
+46;Clara Ramos;34;Zaragoza;34000;Ventas;Sí;2018-10-30;Ejecutivo;Cliente satisfecho
+47;Gabriel Soto;31;Málaga;31000;Marketing;No;2019-08-19;Analista;Proyecto externo
+48;Alicia Medina;37;Murcia;37000;IT;Sí;2013-11-25;Desarrollador;Mentora
+49;Daniel Vidal;32;Palma;32000;Recursos Humanos;Sí;2017-04-16;Asistente;Sin incidencias
+50;Sandra Romero;29;Alicante;29000;Finanzas;Sí;2018-11-11;Contador;Sin novedades

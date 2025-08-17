@@ -151,7 +151,7 @@ public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
     private class AdminObjectPanel extends JPanel implements ActionListener {
         private static final long serialVersionUID = 1L;
 
-        private ObjectAdminUI objectAdminUI = null;
+        private ObjectAdminUI<G> objectAdminUI = null;
         private JButton btnAcceptChanges = new JButton("Accept Changes");
         private JButton btnCancelChanges = new JButton("Cancel Changes");
         private ArrayList<ActionListener> actionListeners = new ArrayList<ActionListener>();
@@ -162,7 +162,7 @@ public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
             btnCancelChanges.setText("Cancel");
         }//End setUIForNew
 
-        public void setUIForEdit(Object _administratedObject){
+        public void setUIForEdit(G _administratedObject){
             objectAdminUI.setObject(_administratedObject);
             btnAcceptChanges.setText("Accept Changes");
             btnCancelChanges.setText("Cancel Changes");
@@ -172,11 +172,11 @@ public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
             return objectAdminUI.getNew();
         }//End getNewObject
 
-        public Object getModifiedObject(Object _administratedObject){
+        public Object getModifiedObject(G _administratedObject){
             return objectAdminUI.acceptChanges(_administratedObject);
         }//End getModifiedObject
 
-        public AdminObjectPanel(ObjectAdminUI _objectAdminUI, ActionListener _actionListener) {
+        public AdminObjectPanel(ObjectAdminUI<G> _objectAdminUI, ActionListener _actionListener) {
             super();
             objectAdminUI = _objectAdminUI;
             actionListeners.add(_actionListener);
@@ -271,7 +271,7 @@ public class PnlArrayListAdmin<G> extends JPanel implements ActionListener{
 
     }//End initComponents
 
-    public PnlArrayListAdmin(ArrayList<G> _objects, ObjectAdminUI _objectAdminUI) {
+    public PnlArrayListAdmin(ArrayList<G> _objects, ObjectAdminUI<G> _objectAdminUI) {
         super();
         objects = _objects;
         adminObjectPanel = new AdminObjectPanel(_objectAdminUI, this);

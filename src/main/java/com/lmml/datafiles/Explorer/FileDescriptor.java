@@ -23,7 +23,7 @@ public class FileDescriptor {
 	private Integer skipLines = 0;
 	private Integer numLines;
 	
-	void setName(String _name) {name = _name;}//End setName
+	public void setName(String _name) {name = _name;}//End setName
 	
 	public String getName() {return name;}//End getName
 	
@@ -32,21 +32,21 @@ public class FileDescriptor {
 		return "%s_%s".formatted(name_repository, id);
 	}//End getRepositoryName
 	
-	void setPath(String _path) {path = _path;}//End setPath
+	public void setPath(String _path) {path = _path;}//End setPath
 	
-	String getPath() {return path;}//End getpath
+	public String getPath() {return path;}//End getpath
 	
-	void setFieldsSeparator(Character _fieldsSeparator) {fieldsSeparator = _fieldsSeparator;}//End setFieldsSeparator
+	public void setFieldsSeparator(Character _fieldsSeparator) {fieldsSeparator = _fieldsSeparator;}//End setFieldsSeparator
 	
-	Character getFieldsSeparator() {return fieldsSeparator;}//End getFieldsSeparator
+	public Character getFieldsSeparator() {return fieldsSeparator;}//End getFieldsSeparator
 	
-	void setFieldsDelimiter(Character _fieldsDelimiter) {fieldsDelimiter = _fieldsDelimiter;}//End setFieldsDelimiter
+	public void setFieldsDelimiter(Character _fieldsDelimiter) {fieldsDelimiter = _fieldsDelimiter;}//End setFieldsDelimiter
 	
-	Character getFieldsDelimiter() {return fieldsDelimiter;}//End getFieldsDelimiter
+	public Character getFieldsDelimiter() {return fieldsDelimiter;}//End getFieldsDelimiter
 	
-	void setHeads(String[] _heads) {heads = _heads;}//End setheads
+	public void setHeads(String[] _heads) {heads = _heads;}//End setheads
 	
-	String[] getHeads(){
+	public String[] getHeads(){
 		return heads;
 	}//End getheads
 
@@ -70,9 +70,9 @@ public class FileDescriptor {
 		return indexList.stream().mapToInt(Integer::intValue).toArray();
 	}//End getHeadsIndex
 	
-	void setSkipLines(Integer _skipLines) {skipLines = _skipLines;}//End setSkipLines
+	public void setSkipLines(Integer _skipLines) {skipLines = _skipLines;}//End setSkipLines
 	
-	Integer getSkipLines() {return skipLines;}//End Integer
+	public Integer getSkipLines() {return skipLines;}//End Integer
 	
 	void setNumLines(Integer _numLines) {numLines = _numLines;}//End setNumLines
 	
